@@ -46,13 +46,19 @@ const Ticket = () => {
   const currTime = (() => {
     if (typeof window !== "undefined") {
       const day = new window.Date();
-      return `${day.getHours()}:${day.getMinutes()}:${day.getSeconds()}`;
+      return `${day.getHours() < 10 ? "0" + day.getHours() : day.getHours()}:${
+        day.getMinutes() < 10 ? "0" + day.getMinutes() : day.getMinutes()
+      }:${day.getSeconds() < 10 ? "0" + day.getSeconds() : day.getSeconds()}`;
     }
   })();
   const currDate = (() => {
     if (typeof window !== "undefined") {
       const day = new window.Date();
-      return `${day.getDate()}/${day.getMonth()}/${day.getFullYear()}`;
+      return `${day.getDate() < 10 ? "0" + day.getDate() : day.getDate()}/${
+        day.getMonth() < 10 ? "0" + day.getMonth() : day.getMonth()
+      }/${
+        day.getFullYear() < 10 ? "0" + day.getFullYear() : day.getFullYear()
+      }`;
     }
   })();
   return (
