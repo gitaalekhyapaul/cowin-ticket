@@ -1,0 +1,33 @@
+{
+  "name": "cowin-ticket",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@types/react-select": "^4.0.16",
+    "axios": "^0.21.1",
+    "bootstrap": "^5.0.2",
+    "formik": "^2.2.9",
+    "next": "11.0.1",
+    "react": "17.0.2",
+    "react-bootstrap": "^1.6.1",
+    "react-dom": "17.0.2",
+    "react-select": "^4.3.1",
+    "yup": "^0.32.9"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/bootstrap": "^5.0.16",
+    "@types/react": "17.0.13",
+    "@types/react-bootstrap": "^0.32.25",
+    "@types/yup": "^0.29.12",
+    "eslint": "7.30.0",
+    "eslint-config-next": "11.0.1",
+    "typescript": "4.3.5"
+  }
+}
