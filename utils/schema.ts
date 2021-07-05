@@ -27,7 +27,7 @@ export const TicketValidationSchema = yup.object({
         .string()
         .trim()
         .oneOf(["Y", "N"], "Registration must be Y or N")
-        .required(),
+        .required("Registration is Required."),
       code: yup
         .string()
         .trim()
