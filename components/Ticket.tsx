@@ -37,11 +37,18 @@ const TextArea = ({ label, ...props }: { [x: string]: any }) => {
   );
 };
 
-const Select = ({ label, setVaccine, ...props }: { [x: string]: any }) => {
+const Select = ({
+  label,
+  setVaccine,
+  setParam,
+  ...props
+}: {
+  [x: string]: any;
+}) => {
   const [field, meta] = useField(props as unknown as FieldConfig<any>);
   useEffect(() => {
-    if (setVaccine) {
-      setVaccine(field.value);
+    if (setParam) {
+      setParam(field.value);
     }
   });
   return (
@@ -129,6 +136,23 @@ const Vaccine = ({ getVaccine, ...props }: { [x: string]: any }) => {
   );
 };
 
+const CowinCode = ({ currCowin, ...props }: { [x: string]: any }) => {
+  if (currCowin === "Y") {
+    return (
+      <>
+        <Input
+          label="Co-WIN Secret Code"
+          name="cowin.code"
+          type="text"
+          placeholder="0000"
+        />
+      </>
+    );
+  } else {
+    return <></>;
+  }
+};
+
 const Date = ({ currDate, ...props }: { [x: string]: any }) => {
   const { values, setFieldValue } = useFormikContext<TicketSchema>();
   useEffect(() => {
@@ -186,6 +210,7 @@ const initValues: TicketSchema = {
 const Ticket = () => {
   const [pincode, setPincode] = useState<string>("");
   const [vaccine, setVaccine] = useState<string>("");
+  const [cowin, setCowin] = useState<string>("");
   const currTime = (() => {
     if (typeof window !== "undefined") {
       const day = new window.Date();
@@ -236,7 +261,17 @@ const Ticket = () => {
             type="text"
             placeholder="Chitpore P.S"
           />
-          <Select label="Vaccine Type" name="vaccine" setVaccine={setVaccine}>
+          <Select
+            label="Co-WIN Registration?"
+            name="cowin.registration"
+            setParam={setCowin}
+          >
+            <option value="">Select</option>
+            <option value="Y">Yes</option>
+            <option value="N">No</option>
+          </Select>
+          <CowinCode currCowin={cowin} />
+          <Select label="Vaccine Type" name="vaccine" setParam={setVaccine}>
             <option value="">Select</option>
             <option value="Covishield">Covishield</option>
             <option value="Covaxin">Covaxin</option>
