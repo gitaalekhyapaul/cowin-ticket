@@ -49,7 +49,7 @@ export const TicketValidationSchema = yup.object({
       ["Covishield", "Covaxin", "Sputnik-V"],
       "Vaccine must be Covishield, Covaxin or Sputnik-V."
     )
-    .required(),
+    .required("Vaccine is Required."),
   price: yup
     .number()
     .moreThan(0, "Price must be more than 0")

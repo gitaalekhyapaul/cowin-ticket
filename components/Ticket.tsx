@@ -1,10 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, useField, FieldConfig, useFormikContext } from "formik";
+import axios from "axios";
 
 import { TicketSchema, TicketValidationSchema } from "../utils/schema";
 
-const Input = ({ label, ...props }: { [x: string]: any }) => {
-  const [field, meta] = useField(props as unknown as FieldConfig<any>);
+const Input = ({ label, setPincode, ...props }: { [x: string]: any }) => {
+  const [field, meta, { setValue }] = useField(
+    props as unknown as FieldConfig<any>
+  );
+  useEffect(() => {
+    if (setPincode) {
+      setPincode(field.value);
+    }
+  });
   return (
     <>
       <label htmlFor={props.id || props.name}>{label}</label>
@@ -29,8 +37,13 @@ const TextArea = ({ label, ...props }: { [x: string]: any }) => {
   );
 };
 
-const Select = ({ label, ...props }: { [x: string]: any }) => {
+const Select = ({ label, setVaccine, ...props }: { [x: string]: any }) => {
   const [field, meta] = useField(props as unknown as FieldConfig<any>);
+  useEffect(() => {
+    if (setVaccine) {
+      setVaccine(field.value);
+    }
+  });
   return (
     <div className="input-group d-block">
       <label className="d-block" htmlFor={props.id || props.name}>
@@ -41,6 +54,106 @@ const Select = ({ label, ...props }: { [x: string]: any }) => {
         <div className="alert alert-danger">{meta.error}</div>
       ) : null}
     </div>
+  );
+};
+
+const PincodeSelect = ({ getPincode, ...props }: { [x: string]: any }) => {
+  const [options, setOptions] = useState<
+    Array<{ name: string; value: string }>
+  >([]);
+  useEffect(() => {
+    async function getOptions() {
+      try {
+        const newOptions: Array<{ name: string; value: string }> = [
+          { name: "Select", value: "" },
+        ];
+        const { data } = await axios.get(
+          `https://api.data.gov.in/resource/6176ee09-3d56-4a3b-8115-21841576b2f6?api-key=579b464db66ec23bdd00000180bd650b53b74cf87a79d820febfad38&format=json&skip=0&limit=100&filters[pincode]=${getPincode}`
+        );
+        if (data.records) {
+          data.records.map((record: { officename: string }) => {
+            newOptions.push({
+              name: record.officename,
+              value: record.officename,
+            });
+          });
+        }
+        setOptions(newOptions);
+      } catch (err) {
+        console.dir(err);
+      }
+    }
+    getOptions();
+  }, [getPincode]);
+  return (
+    <>
+      <Select label="Post Office" name="po">
+        {options.map((val, index) => {
+          return (
+            <option key={index} value={val.value}>
+              {val.name}
+            </option>
+          );
+        })}
+      </Select>
+    </>
+  );
+};
+
+const Vaccine = ({ getVaccine, ...props }: { [x: string]: any }) => {
+  const { values, setFieldValue } = useFormikContext<TicketSchema>();
+  useEffect(() => {
+    switch (getVaccine) {
+      case "Covishield": {
+        setFieldValue("price", 780, true);
+        break;
+      }
+      case "Covaxin": {
+        setFieldValue("price", 1170, true);
+        break;
+      }
+      case "Sputnik-V": {
+        setFieldValue("price", 650, true);
+        break;
+      }
+      default: {
+        setFieldValue("price", 0, true);
+        break;
+      }
+    }
+  }, [getVaccine]);
+  return (
+    <>
+      <Input label="Vaccine Price" name="price" readOnly />
+    </>
+  );
+};
+
+const Date = ({ currDate, ...props }: { [x: string]: any }) => {
+  const { values, setFieldValue } = useFormikContext<TicketSchema>();
+  useEffect(() => {
+    if (currDate) {
+      setFieldValue("date", currDate, true);
+    }
+  }, [currDate]);
+  return (
+    <>
+      <Input label="Date" name="date" readOnly />
+    </>
+  );
+};
+
+const Time = ({ currTime, ...props }: { [x: string]: any }) => {
+  const { values, setFieldValue } = useFormikContext<TicketSchema>();
+  useEffect(() => {
+    if (currTime) {
+      setFieldValue("time", currTime, true);
+    }
+  }, [currTime]);
+  return (
+    <>
+      <Input label="Time" name="time" readOnly />
+    </>
   );
 };
 
@@ -71,6 +184,20 @@ const initValues: TicketSchema = {
 };
 
 const Ticket = () => {
+  const [pincode, setPincode] = useState<string>("");
+  const [vaccine, setVaccine] = useState<string>("");
+  const currTime = (() => {
+    if (typeof window !== "undefined") {
+      const day = new window.Date();
+      return `${day.getHours()}:${day.getMinutes()}:${day.getSeconds()}`;
+    }
+  })();
+  const currDate = (() => {
+    if (typeof window !== "undefined") {
+      const day = new window.Date();
+      return `${day.getDate()}/${day.getMonth()}/${day.getFullYear()}`;
+    }
+  })();
   return (
     <>
       <Formik
@@ -100,7 +227,24 @@ const Ticket = () => {
             name="pincode"
             type="text"
             placeholder="700030"
+            setPincode={setPincode}
           />
+          <PincodeSelect getPincode={pincode} />
+          <Input
+            label="Police Station"
+            name="ps"
+            type="text"
+            placeholder="Chitpore P.S"
+          />
+          <Select label="Vaccine Type" name="vaccine" setVaccine={setVaccine}>
+            <option value="">Select</option>
+            <option value="Covishield">Covishield</option>
+            <option value="Covaxin">Covaxin</option>
+            <option value="Sputnik-V">Sputnik-V</option>
+          </Select>
+          <Vaccine getVaccine={vaccine} />
+          <Date currDate={currDate} />
+          <Time currTime={currTime} />
           <button type="submit">Submit</button>
         </Form>
       </Formik>
