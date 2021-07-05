@@ -11,7 +11,7 @@ const PincodeSelect = ({ getPincode, ...props }: { [x: string]: any }) => {
     async function getOptions() {
       try {
         const newOptions: Array<{ name: string; value: string }> = [
-          { name: "Select", value: "" },
+          { name: "Select Option", value: "" },
         ];
         const { data } = await axios.get(
           `https://api.data.gov.in/resource/6176ee09-3d56-4a3b-8115-21841576b2f6?api-key=579b464db66ec23bdd00000180bd650b53b74cf87a79d820febfad38&format=json&skip=0&limit=100&filters[pincode]=${getPincode}`
