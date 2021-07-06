@@ -15,12 +15,7 @@ const PincodeSelect = ({ getPincode, ...props }: { [x: string]: any }) => {
         ];
         if (/^7[0-9]{5}$/.test(getPincode)) {
           const { data } = await axios.get(
-            `https://api.data.gov.in/resource/6176ee09-3d56-4a3b-8115-21841576b2f6?api-key=${process.env.NEXT_PUBLIC_API_KEY}&format=json&skip=0&limit=100&filters[pincode]=${getPincode}`,
-            {
-              headers: {
-                "Access-Control-Allow-Origin": "*",
-              },
-            }
+            `https://api.data.gov.in/resource/6176ee09-3d56-4a3b-8115-21841576b2f6?api-key=${process.env.NEXT_PUBLIC_API_KEY}&format=json&skip=0&limit=100&filters[pincode]=${getPincode}`
           );
           if (data.records) {
             data.records.map((record: { officename: string }) => {
