@@ -1,9 +1,13 @@
+import { useFormikContext } from "formik";
 import React from "react";
+import { TicketSchema } from "../../utils/schema";
 
 import Input from "./Input";
 
-const CowinCode = ({ currCowin, ...props }: { [x: string]: any }) => {
-  if (currCowin === "Y") {
+const CowinCode = () => {
+  const { values } = useFormikContext();
+  const { cowin } = values as TicketSchema;
+  if (cowin.registration === "Y") {
     return (
       <>
         <Input

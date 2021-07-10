@@ -10,6 +10,7 @@ import {
   CowinCode,
   Date,
   Time,
+  GetOTP,
 } from "../components/Inputs";
 import SubmitButton from "./SubmitButton";
 import { TicketSchema, TicketValidationSchema } from "../utils/schema";
@@ -30,9 +31,13 @@ const initValues: TicketSchema = {
   pincode: "",
   po: "",
   ps: "",
+  mobile: "",
+  dose: "",
   cowin: {
     code: "",
     registration: "",
+    validatedOtp: false,
+    beneficiaryId: "",
   },
   vaccine: "",
   price: 0,
@@ -41,9 +46,7 @@ const initValues: TicketSchema = {
 };
 
 const Ticket = () => {
-  const [pincode, setPincode] = useState<string>("");
-  const [vaccine, setVaccine] = useState<string>("");
-  const [cowin, setCowin] = useState<string>("");
+  const [txnId, setTxnId] = useState<string>("");
   const currTime = (() => {
     if (typeof window !== "undefined") {
       const day = new window.Date();
@@ -110,13 +113,12 @@ const Ticket = () => {
                     name="pincode"
                     type="text"
                     placeholder="700030"
-                    setParam={setPincode}
                   />
                 </div>
               </div>
               <div className="row mx-auto mb-2">
                 <div className="col-12 col-md-6">
-                  <PincodeSelect getPincode={pincode} />
+                  <PincodeSelect />
                 </div>
                 <div className="col-12 col-md-6">
                   <Input
@@ -131,27 +133,44 @@ const Ticket = () => {
             <div className="col-md-6 col-12">
               <div className="row mx-auto mb-2">
                 <div className="col-12 col-md-6">
+                  <Select label="Dose" name="dose">
+                    <option value="">Select Option</option>
+                    <option value="I">I</option>
+                    <option value="II">II</option>
+                  </Select>
+                </div>
+                <div className="col-12 col-md-6">
+                  <Input
+                    label="Mobile Number"
+                    name="mobile"
+                    type="text"
+                    placeholder="9123456780"
+                  />
+                </div>
+              </div>
+              <div className="row mx-auto mb-2">
+                <div className="col-12 col-md-6">
                   <Select
                     label="Co-WIN Registration?"
                     name="cowin.registration"
-                    setParam={setCowin}
                   >
                     <option value="">Select Option</option>
                     <option value="Y">Yes</option>
                     <option value="N">No</option>
                   </Select>
                 </div>
-                <div className="col-12 col-md-6">
-                  <CowinCode currCowin={cowin} />
+                <div className="col-12 col-md-6 d-flex justify-content-center align-items-end">
+                  <GetOTP setTxnId={setTxnId} />
+                </div>
+              </div>
+              <div className="row mx-auto mb-2">
+                <div className="col-12">
+                  <CowinCode />
                 </div>
               </div>
               <div className="row mx-auto mb-2">
                 <div className="col-12 col-md-6">
-                  <Select
-                    label="Vaccine Type"
-                    name="vaccine"
-                    setParam={setVaccine}
-                  >
+                  <Select label="Vaccine Type" name="vaccine">
                     <option value="">Select Option</option>
                     <option value="Covishield">Covishield</option>
                     <option value="Covaxin">Covaxin</option>
@@ -159,7 +178,7 @@ const Ticket = () => {
                   </Select>
                 </div>
                 <div className="col-12 col-md-6">
-                  <Vaccine getVaccine={vaccine} />
+                  <Vaccine />
                 </div>
               </div>
               <div className="row mx-auto mt-5 mb-3">

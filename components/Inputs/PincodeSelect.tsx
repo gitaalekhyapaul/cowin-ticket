@@ -2,20 +2,24 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import Select from "./Select";
+import { useFormikContext } from "formik";
+import { TicketSchema } from "../../utils/schema";
 
-const PincodeSelect = ({ getPincode, ...props }: { [x: string]: any }) => {
+const PincodeSelect = () => {
   const [options, setOptions] = useState<
     Array<{ name: string; value: string }>
   >([]);
+  const { values } = useFormikContext();
+  const { pincode } = values as TicketSchema;
   useEffect(() => {
     async function getOptions() {
       try {
         const newOptions: Array<{ name: string; value: string }> = [
           { name: "Select Option", value: "" },
         ];
-        if (/^7[0-9]{5}$/.test(getPincode)) {
+        if (/^7[0-9]{5}$/.test(pincode)) {
           const { data } = await axios.get(
-            `https://api.data.gov.in/resource/6176ee09-3d56-4a3b-8115-21841576b2f6?api-key=${process.env.NEXT_PUBLIC_API_KEY}&format=json&skip=0&limit=100&filters[pincode]=${getPincode}`
+            `https://api.data.gov.in/resource/6176ee09-3d56-4a3b-8115-21841576b2f6?api-key=${process.env.NEXT_PUBLIC_API_KEY}&format=json&skip=0&limit=100&filters[pincode]=${pincode}`
           );
           if (data.records) {
             data.records.map((record: { officename: string }) => {
@@ -33,7 +37,7 @@ const PincodeSelect = ({ getPincode, ...props }: { [x: string]: any }) => {
       }
     }
     getOptions();
-  }, [getPincode]);
+  }, [pincode]);
   return (
     <>
       <Select label="Post Office" name="po">

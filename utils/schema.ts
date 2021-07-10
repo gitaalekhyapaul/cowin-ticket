@@ -21,6 +21,16 @@ export const TicketValidationSchema = yup.object({
     .required("Pincode is Required."),
   po: yup.string().trim().required("Post Office is Required."),
   ps: yup.string().trim().required("Police Station is Required."),
+  mobile: yup
+    .string()
+    .trim()
+    .required("Mobile number is Required.")
+    .matches(/^[0-9]{10}$/, "Mobile number should be 10 digits."),
+  dose: yup
+    .string()
+    .trim()
+    .oneOf(["I", "II"], "Registration must be I or II")
+    .required("Dose is Required."),
   cowin: yup
     .object({
       registration: yup
@@ -32,9 +42,19 @@ export const TicketValidationSchema = yup.object({
         .string()
         .trim()
         .length(4, "CoWin Secret Code must be 4 digits."),
+      beneficiaryId: yup.string().trim(),
+      validatedOtp: yup
+        .boolean()
+        .isTrue()
+        .required("OTP Validation is Required."),
     })
     .test("XOR", "Either Non-CoWin or Secret Code is Required.", (values) => {
-      if (values.registration === "Y" && values.code) {
+      if (
+        values.registration === "Y" &&
+        values.code &&
+        values.validatedOtp &&
+        values.beneficiaryId
+      ) {
         return true;
       } else if (values.registration === "N") {
         return true;

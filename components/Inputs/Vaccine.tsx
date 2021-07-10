@@ -4,10 +4,11 @@ import { useFormikContext } from "formik";
 import { TicketSchema } from "../../utils/schema";
 import Input from "./Input";
 
-const Vaccine = ({ getVaccine, ...props }: { [x: string]: any }) => {
+const Vaccine = () => {
   const { values, setFieldValue } = useFormikContext<TicketSchema>();
+  const { vaccine } = values as TicketSchema;
   useEffect(() => {
-    switch (getVaccine) {
+    switch (vaccine) {
       case "Covishield": {
         setFieldValue("price", 780, true);
         break;
@@ -25,7 +26,7 @@ const Vaccine = ({ getVaccine, ...props }: { [x: string]: any }) => {
         break;
       }
     }
-  }, [getVaccine]);
+  }, [vaccine]);
   return (
     <>
       <Input label="Vaccine Price" name="price" readOnly />

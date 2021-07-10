@@ -6,6 +6,7 @@ import Vaccine from "./Vaccine";
 import CowinCode from "./CowinCode";
 import Date from "./Date";
 import Time from "./Time";
+import GetOTP from "./GetOTP";
 
 export {
   Input,
@@ -16,4 +17,5 @@ export {
   CowinCode,
   Date,
   Time,
+  GetOTP,
 };
