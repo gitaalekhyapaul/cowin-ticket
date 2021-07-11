@@ -4,6 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 import { TicketSchema } from "../../utils/schema";
+import API from "../../utils/api";
 
 const GetOTP = () => {
   const [txnId, setTxnId] = useState("");
@@ -62,7 +63,7 @@ const GetOTP = () => {
   const validateOTPHandler = async () => {
     setDisabled({ ...disabled, validateOtp: true });
     try {
-      const { data } = (await axios.post("/api/validate/otp", {
+      const { data } = (await API.post("/api/v1/validate/otp", {
         otp: cowin.otp,
         txnId: txnId,
         code: cowin.code,
