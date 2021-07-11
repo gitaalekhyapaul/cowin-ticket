@@ -42,7 +42,11 @@ const handleValidateBeneficiary = async (
   try {
     const beneficiary = req.body as validateBeneficiaryRequest;
     const ticketData = await generateTicket(beneficiary);
-    console.log(ticketData);
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Disposition": "attachment; filename=ticket.pdf",
+      "x-filename": "ticket.pdf",
+    });
     res.status(200).send(ticketData);
   } catch (err) {
     next(err);

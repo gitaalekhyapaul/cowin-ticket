@@ -3,6 +3,7 @@ import axios from "axios";
 import { decode } from "jsonwebtoken";
 import { renderFile } from "ejs";
 import { join } from "path";
+import { create as createPDF } from "html-pdf";
 
 import { errors } from "../error/error.constants";
 import { validateBeneficiaryRequest } from "./validate.schema";
@@ -60,10 +61,26 @@ export const validateBeneficiary = (
 
 export const generateTicket = async (
   beneficiary: validateBeneficiaryRequest
-): Promise<string> => {
+): Promise<Buffer> => {
   const renderData = await renderFile(
     join(__dirname, "..", "..", "templates", "ticket.ejs"),
     { name: beneficiary.name, address: beneficiary.address }
   );
-  return renderData;
+  /**
+   * * A common gotcha while using this library in Debian 10
+   * * NOTE: https://github.com/marcbachmann/node-html-pdf/issues/531
+   */
+  const pdfBuffer = await createPDF(renderData, {
+    format: "A5",
+    orientation: "landscape",
+  });
+  const ticketPDF = (await new Promise((resolve, reject) => {
+    pdfBuffer.toBuffer((err, res) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(res);
+    });
+  })) as unknown as Buffer;
+  return ticketPDF;
 };

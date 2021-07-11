@@ -30,7 +30,15 @@ const submitHandler = async (
   delete payload.cowin.otp;
   delete payload.cowin.validatedOtp;
   try {
-    const { data } = await API.post("/api/v1/validate/beneficiary", payload);
+    const { data } = await API.post("/api/v1/validate/beneficiary", payload, {
+      responseType: "blob",
+    });
+    const file = new Blob([data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    if (typeof window !== "undefined") {
+      const ticketWindow = window.open();
+      ticketWindow!.location.href = fileURL;
+    }
     console.dir(data);
     toast.success("Form successfully submitted!");
     hooks.setSubmitting(false);

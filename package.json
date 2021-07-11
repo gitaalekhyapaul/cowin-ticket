@@ -36,6 +36,7 @@
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
+    "html-pdf": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "yup": "^0.32.9"
   },
@@ -45,6 +46,7 @@
     "@types/dotenv": "^8.2.0",
     "@types/ejs": "^3.0.7",
     "@types/express": "^4.17.13",
+    "@types/html-pdf": "^2.2.1",
     "@types/jsonwebtoken": "^8.5.4",
     "@types/node": "^16.3.1",
     "@types/yup": "^0.29.13",
