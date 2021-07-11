@@ -1,8 +1,11 @@
 import { createHash } from "crypto";
 import axios from "axios";
 import { decode } from "jsonwebtoken";
+import { renderFile } from "ejs";
+import { join } from "path";
 
 import { errors } from "../error/error.constants";
+import { validateBeneficiaryRequest } from "./validate.schema";
 
 export const validateOtp = async (
   otp: string,
@@ -53,4 +56,14 @@ export const validateBeneficiary = (
   } else {
     throw errors.INVALID_BENEFICIARY;
   }
+};
+
+export const generateTicket = async (
+  beneficiary: validateBeneficiaryRequest
+): Promise<string> => {
+  const renderData = await renderFile(
+    join(__dirname, "..", "..", "templates", "ticket.ejs"),
+    { name: beneficiary.name, address: beneficiary.address }
+  );
+  return renderData;
 };

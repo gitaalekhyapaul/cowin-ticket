@@ -94,8 +94,8 @@ const GetOTP = () => {
         <button
           className={
             disabled.getOtp
-              ? "d-flex-inline btn btn-secondary mx-2"
-              : "d-flex-inline btn btn-primary mx-2"
+              ? "d-flex-inline btn btn-secondary mx-md-2 m-2"
+              : "d-flex-inline btn btn-primary mx-md-2 m-2"
           }
           disabled={disabled.getOtp}
           onClick={getOTPHandler}
@@ -105,8 +105,8 @@ const GetOTP = () => {
         <button
           className={
             disabled.validateOtp
-              ? "d-flex-inline btn btn-secondary mx-2"
-              : "d-flex-inline btn btn-info mx-2"
+              ? "d-flex-inline btn btn-secondary mx-md-2 m-2"
+              : "d-flex-inline btn btn-info mx-md-2 m-2"
           }
           disabled={disabled.validateOtp}
           onClick={validateOTPHandler}

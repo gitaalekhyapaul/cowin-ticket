@@ -4,9 +4,15 @@ import validateQuery from "../middlewares/validate-query";
 import {
   validateOTPRequest,
   validateOTPRequestSchema,
+  validateBeneficiaryRequest,
+  validateBeneficiaryRequestSchema,
 } from "./validate.schema";
 
-import { validateOtp, validateBeneficiary } from "./validate.service";
+import {
+  validateOtp,
+  validateBeneficiary,
+  generateTicket,
+} from "./validate.service";
 
 const router: Router = Router();
 
@@ -28,10 +34,30 @@ const handleValidateOtp = async (
   }
 };
 
+const handleValidateBeneficiary = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const beneficiary = req.body as validateBeneficiaryRequest;
+    const ticketData = await generateTicket(beneficiary);
+    console.log(ticketData);
+    res.status(200).send(ticketData);
+  } catch (err) {
+    next(err);
+  }
+};
+
 router.post(
   "/otp",
   validateQuery("body", validateOTPRequestSchema),
   handleValidateOtp
+);
+router.post(
+  "/beneficiary",
+  validateQuery("body", validateBeneficiaryRequestSchema),
+  handleValidateBeneficiary
 );
 
 export default router;

@@ -10,7 +10,7 @@ const Time = ({ currTime, ...props }: { [x: string]: any }) => {
     if (currTime) {
       setFieldValue("time", currTime, true);
     }
-  }, [currTime]);
+  }, []);
   return (
     <>
       <Input label="Time" name="time" readOnly />

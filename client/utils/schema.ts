@@ -1,7 +1,7 @@
 import * as yup from "yup";
 
 export const TicketValidationSchema = yup.object({
-  name: yup.string().trim().required("Name is required."),
+  name: yup.string().trim().required("Name is Required."),
   age: yup
     .number()
     .positive()
@@ -29,14 +29,14 @@ export const TicketValidationSchema = yup.object({
   dose: yup
     .string()
     .trim()
-    .oneOf(["I", "II"], "Registration must be I or II")
+    .oneOf(["I", "II"], "Registration must be I or II.")
     .required("Dose is Required."),
   cowin: yup
     .object({
       registration: yup
         .string()
         .trim()
-        .oneOf(["Y", "N"], "Registration must be Y or N")
+        .oneOf(["Y", "N"], "Registration must be Y or N.")
         .required("Registration is Required."),
       code: yup
         .string()
@@ -68,7 +68,7 @@ export const TicketValidationSchema = yup.object({
     .required("Vaccine is Required."),
   price: yup
     .number()
-    .moreThan(0, "Price must be more than 0")
+    .moreThan(0, "Price must be more than 0.")
     .required("Price is Required."),
   date: yup.string().trim().required("Date is Required."),
   time: yup.string().trim().required("Time is Required."),

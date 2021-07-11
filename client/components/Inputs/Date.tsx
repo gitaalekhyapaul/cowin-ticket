@@ -10,7 +10,7 @@ const Date = ({ currDate, ...props }: { [x: string]: any }) => {
     if (currDate) {
       setFieldValue("date", currDate, true);
     }
-  }, [currDate]);
+  }, []);
   return (
     <>
       <Input label="Date" name="date" readOnly />
