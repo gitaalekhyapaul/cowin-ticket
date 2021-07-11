@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useFormikContext } from "formik";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 import { TicketSchema } from "../../utils/schema";
 
@@ -14,7 +15,6 @@ const GetOTP = () => {
   const { mobile, cowin } = values;
   useEffect(() => {
     if (/^[0-9]{10}$/.test(mobile)) {
-      console.log(mobile);
       setDisabled({ ...disabled, getOtp: false });
     } else {
       setDisabled({ ...disabled, getOtp: true });
@@ -44,9 +44,15 @@ const GetOTP = () => {
           mobile: mobile,
         }
       )) as { data: { txnId: string } };
+      toast.success("OTP sent!");
       setTxnId(data.txnId);
     } catch (err) {
       console.dir(err.response);
+      if (typeof err.response.data === "string") {
+        toast.error(err.response.data);
+      } else {
+        toast.error("Error in sending OTP!");
+      }
     }
     setTimeout(() => {
       setDisabled({ ...disabled, getOtp: false });
@@ -65,6 +71,11 @@ const GetOTP = () => {
       setFieldValue("cowin.validatedOtp", data.success, true);
     } catch (err) {
       console.dir(err.response);
+      if (typeof err.response.data === "string") {
+        toast.error(err.response.data);
+      } else {
+        toast.error("Error in validating OTP!");
+      }
       setDisabled({ ...disabled, validateOtp: false });
     }
   };

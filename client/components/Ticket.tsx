@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Formik, Form } from "formik";
+import { toast } from "react-toastify";
 
 import {
   Input,
@@ -19,6 +20,7 @@ const submitHandler = async (
   values: TicketSchema,
   setSubmitting: (isSubmitting: boolean) => void
 ) => {
+  toast.success("Form successfully submitted!");
   console.dir(values);
   setSubmitting(false);
 };

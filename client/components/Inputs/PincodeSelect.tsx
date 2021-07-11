@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 import Select from "./Select";
 import { useFormikContext } from "formik";
@@ -32,7 +33,7 @@ const PincodeSelect = () => {
         }
         setOptions(newOptions);
       } catch (err) {
-        console.error("Axios Error!");
+        toast.error("Error fetching P.O List!");
         console.dir(err.response);
       }
     }
