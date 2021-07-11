@@ -6,7 +6,7 @@ import Input from "./Input";
 
 const Vaccine = () => {
   const { values, setFieldValue } = useFormikContext<TicketSchema>();
-  const { vaccine } = values as TicketSchema;
+  const { vaccine } = values;
   useEffect(() => {
     switch (vaccine) {
       case "Covishield": {

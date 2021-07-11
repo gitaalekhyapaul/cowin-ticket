@@ -41,20 +41,16 @@ export const TicketValidationSchema = yup.object({
       code: yup
         .string()
         .trim()
-        .length(4, "CoWin Secret Code must be 4 digits."),
+        .matches(/^[0-9]{4}$/, "CoWin Secret Code must be 4 digits."),
       beneficiaryId: yup.string().trim(),
-      validatedOtp: yup
-        .boolean()
-        .isTrue()
-        .required("OTP Validation is Required."),
+      otp: yup
+        .string()
+        .trim()
+        .matches(/^[0-9]{6}$/, "OTP must be 6 digits."),
+      validatedOtp: yup.boolean().isTrue(),
     })
     .test("XOR", "Either Non-CoWin or Secret Code is Required.", (values) => {
-      if (
-        values.registration === "Y" &&
-        values.code &&
-        values.validatedOtp &&
-        values.beneficiaryId
-      ) {
+      if (values.registration === "Y" && values.code && values.beneficiaryId) {
         return true;
       } else if (values.registration === "N") {
         return true;
@@ -79,3 +75,8 @@ export const TicketValidationSchema = yup.object({
 });
 
 export type TicketSchema = yup.InferType<typeof TicketValidationSchema>;
+
+export interface OtpValidationSchema {
+  txnId: string;
+  otp: string;
+}

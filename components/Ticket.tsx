@@ -15,7 +15,7 @@ import {
 import SubmitButton from "./SubmitButton";
 import { TicketSchema, TicketValidationSchema } from "../utils/schema";
 
-const submitHandler = (
+const submitHandler = async (
   values: TicketSchema,
   setSubmitting: (isSubmitting: boolean) => void
 ) => {
@@ -34,10 +34,11 @@ const initValues: TicketSchema = {
   mobile: "",
   dose: "",
   cowin: {
-    code: "",
     registration: "",
-    validatedOtp: false,
+    code: "",
     beneficiaryId: "",
+    otp: "",
+    validatedOtp: undefined,
   },
   vaccine: "",
   price: 0,
@@ -46,7 +47,6 @@ const initValues: TicketSchema = {
 };
 
 const Ticket = () => {
-  const [txnId, setTxnId] = useState<string>("");
   const currTime = (() => {
     if (typeof window !== "undefined") {
       const day = new window.Date();
@@ -129,8 +129,6 @@ const Ticket = () => {
                   />
                 </div>
               </div>
-            </div>
-            <div className="col-md-6 col-12">
               <div className="row mx-auto mb-2">
                 <div className="col-12 col-md-6">
                   <Select label="Dose" name="dose">
@@ -148,6 +146,8 @@ const Ticket = () => {
                   />
                 </div>
               </div>
+            </div>
+            <div className="col-md-6 col-12">
               <div className="row mx-auto mb-2">
                 <div className="col-12 col-md-6">
                   <Select
@@ -160,13 +160,11 @@ const Ticket = () => {
                   </Select>
                 </div>
                 <div className="col-12 col-md-6 d-flex justify-content-center align-items-end">
-                  <GetOTP setTxnId={setTxnId} />
+                  <GetOTP />
                 </div>
               </div>
               <div className="row mx-auto mb-2">
-                <div className="col-12">
-                  <CowinCode />
-                </div>
+                <CowinCode />
               </div>
               <div className="row mx-auto mb-2">
                 <div className="col-12 col-md-6">

@@ -9,8 +9,8 @@ const PincodeSelect = () => {
   const [options, setOptions] = useState<
     Array<{ name: string; value: string }>
   >([]);
-  const { values } = useFormikContext();
-  const { pincode } = values as TicketSchema;
+  const { values } = useFormikContext<TicketSchema>();
+  const { pincode } = values;
   useEffect(() => {
     async function getOptions() {
       try {
