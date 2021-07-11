@@ -39,4 +39,12 @@ export const errors = {
     httpStatus: 403,
     message: "Action Forbidden.",
   },
+  INVALID_BENEFICIARY: {
+    httpStatus: 400,
+    message: "Beneficiary Secret Code Invalid!",
+  },
+  INVALID_OTP: {
+    httpStatus: 400,
+    message: "Invalid OTP.",
+  },
 };

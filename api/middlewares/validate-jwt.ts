@@ -2,7 +2,11 @@ import { verify } from "jsonwebtoken";
 import * as yup from "yup";
 import { Request, Response, NextFunction } from "express";
 import { errors } from "../error/error.constants";
-import { userInfo } from "../auth/auth.schema";
+/**
+ * TODO: Apply userInfo from auth Schema
+ */
+// import { userInfo } from "../auth/auth.schema";
+interface userInfo {}
 
 export const JwtRequestSchema = yup
   .object({

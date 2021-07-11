@@ -47,17 +47,22 @@ const GetOTP = () => {
       )) as { data: { txnId: string } };
       toast.success("OTP sent!");
       setTxnId(data.txnId);
+      setTimeout(() => {
+        setDisabled({ ...disabled, getOtp: false });
+      }, 180 * 1000);
     } catch (err) {
       console.dir(err.response);
       if (typeof err.response.data === "string") {
         toast.error(err.response.data);
+      } else if (typeof err.response.data.success !== "undefined") {
+        toast.error(err.response.data.error);
       } else {
         toast.error("Error in sending OTP!");
       }
+      setTimeout(() => {
+        setDisabled({ ...disabled, getOtp: false });
+      }, 5 * 1000);
     }
-    setTimeout(() => {
-      setDisabled({ ...disabled, getOtp: false });
-    }, 10000);
   };
 
   const validateOTPHandler = async () => {
@@ -74,6 +79,8 @@ const GetOTP = () => {
       console.dir(err.response);
       if (typeof err.response.data === "string") {
         toast.error(err.response.data);
+      } else if (typeof err.response.data.success !== "undefined") {
+        toast.error(err.response.data.error);
       } else {
         toast.error("Error in validating OTP!");
       }

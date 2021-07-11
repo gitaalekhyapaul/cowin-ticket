@@ -38,7 +38,9 @@ Promise.all([])
   .then(() => {
     app.listen(process.env.PORT!, () => {
       console.log(
-        `Server:${process.env.NODE_ENV} Listening for Requests on Port ${process.env.PORT}`
+        `Server:${
+          process.env.NODE_ENV === "production" ? "production" : "development"
+        } Listening for Requests on Port ${process.env.PORT}`
       );
     });
   })
