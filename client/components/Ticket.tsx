@@ -12,7 +12,7 @@ import {
   Date,
   Time,
   GetOTP,
-} from "../components/Inputs";
+} from "./Inputs";
 import SubmitButton from "./SubmitButton";
 import { TicketSchema, TicketValidationSchema } from "../utils/schema";
 import API from "../utils/api";
