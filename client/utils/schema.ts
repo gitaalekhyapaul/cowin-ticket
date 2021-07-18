@@ -83,6 +83,6 @@ export interface OtpValidationSchema {
 
 export enum vaccinePrice {
   "Covishield" = 780,
-  "Covaxin" = 1170,
+  "Covaxin" = 1200,
   "Sputnik-V" = 650,
 }
