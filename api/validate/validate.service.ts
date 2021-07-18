@@ -8,6 +8,7 @@ import { join } from "path";
 
 import { errors } from "../error/error.constants";
 import { validateBeneficiaryRequest, dueDate } from "./validate.schema";
+import { DatabaseService } from "../services/database.service";
 
 export const validateOtp = async (
   otp: string,
@@ -290,4 +291,17 @@ export const generateTicket = async (
     });
   });
   return ticketPDF;
+};
+
+export const addBeneficiary = async (
+  beneficiary: validateBeneficiaryRequest
+): Promise<string> => {
+  const db = await DatabaseService.getInstance().getDb("beneficiaries");
+  const num = (await db.countDocuments({})) + 1;
+  const token = "0".repeat(5 - String(num).length) + num;
+  const { insertedId } = await db.insertOne({
+    id: `${token}`,
+    ...beneficiary,
+  });
+  return `${token}`;
 };

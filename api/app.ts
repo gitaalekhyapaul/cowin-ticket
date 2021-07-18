@@ -7,6 +7,7 @@ dotenvConfig();
 
 import { errorHandler } from "./error/error.handler";
 import validateRoutes from "./validate/validate.routes";
+import { DatabaseService } from "./services/database.service";
 
 const app: Express = express();
 app.use(express.json());
@@ -34,7 +35,7 @@ if (process.env.NODE_ENV === "production") {
 
 app.use(errorHandler);
 
-Promise.all([])
+Promise.all([DatabaseService.getInstance().initialize()])
   .then(() => {
     app.listen(process.env.PORT!, () => {
       console.log(

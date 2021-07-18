@@ -12,6 +12,7 @@ import {
   validateOtp,
   validateBeneficiary,
   generateTicket,
+  addBeneficiary,
 } from "./validate.service";
 
 const router: Router = Router();
@@ -41,7 +42,8 @@ const handleValidateBeneficiary = async (
 ) => {
   try {
     const beneficiary = req.body as validateBeneficiaryRequest;
-    const ticketData = await generateTicket(beneficiary);
+    const token = await addBeneficiary(beneficiary);
+    const ticketData = await generateTicket(token, beneficiary);
     res.set({
       "Content-Type": "application/pdf",
       "Content-Disposition": "attachment; filename=ticket.pdf",
