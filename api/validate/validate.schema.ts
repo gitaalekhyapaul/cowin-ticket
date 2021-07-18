@@ -32,7 +32,7 @@ export const validateBeneficiaryRequestSchema = yup.object({
   gender: yup
     .string()
     .trim()
-    .oneOf(["Male", "Female", "Others"], "Gender: Invalid Input.")
+    .oneOf(["Male", "Female", "Others"], "Gender: Invalid Input")
     .required("Gender is Required"),
   address: yup.string().trim().required("Address is Required"),
   pincode: yup
@@ -90,3 +90,9 @@ export const validateBeneficiaryRequestSchema = yup.object({
 export type validateBeneficiaryRequest = yup.InferType<
   typeof validateBeneficiaryRequestSchema
 >;
+
+export const dueDate: { [x: string]: number } = {
+  Covishield: 84,
+  Covaxin: 30,
+  "Sputnik-V": 30,
+};
