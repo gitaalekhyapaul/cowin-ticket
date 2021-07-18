@@ -91,8 +91,17 @@ export type validateBeneficiaryRequest = yup.InferType<
   typeof validateBeneficiaryRequestSchema
 >;
 
-export const dueDate: { [x: string]: number } = {
-  Covishield: 84,
-  Covaxin: 30,
-  "Sputnik-V": 30,
+export const dueDate: { [x: string]: { start: number; end: number } } = {
+  Covishield: {
+    start: 12,
+    end: 14,
+  },
+  Covaxin: {
+    start: 4,
+    end: 8,
+  },
+  "Sputnik-V": {
+    start: 4,
+    end: 4,
+  },
 };

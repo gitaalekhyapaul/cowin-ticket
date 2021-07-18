@@ -115,14 +115,18 @@ export const generateTicket = async (
   /**
    * Set beneficiary dose information (dose number & due date if applicable)
    */
-  const dose =
-    beneficiary.dose + `${beneficiary.dose === "I" ? " (One)" : " (Two)"}`;
-  const vaccineDue = moment(
+  const dose = `${beneficiary.dose === "I" ? "1ST" : "2ND"}`;
+  const vaccineDue = `${moment(
     `${moment(beneficiary.date, "DD/MM/YYYY")
-      .add(dueDate[beneficiary.vaccine], "days")
+      .add(dueDate[beneficiary.vaccine].start, "weeks")
       .calendar()}`,
     "MM/DD/YYYY"
-  ).format("DD/MM/YYYY");
+  ).format("DD/MM/YYYY")} - ${moment(
+    `${moment(beneficiary.date, "DD/MM/YYYY")
+      .add(dueDate[beneficiary.vaccine].end, "weeks")
+      .calendar()}`,
+    "MM/DD/YYYY"
+  ).format("DD/MM/YYYY")}`;
   doc.text(dose, 297, 153, {
     height: 21,
     width: 40,
