@@ -80,3 +80,9 @@ export interface OtpValidationSchema {
   txnId: string;
   otp: string;
 }
+
+export enum vaccinePrice {
+  "Covishield" = 780,
+  "Covaxin" = 1170,
+  "Sputnik-V" = 650,
+}

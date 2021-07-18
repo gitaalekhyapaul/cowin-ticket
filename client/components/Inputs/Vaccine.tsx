@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useFormikContext } from "formik";
 
-import { TicketSchema } from "../../utils/schema";
+import { TicketSchema, vaccinePrice } from "../../utils/schema";
 import Input from "./Input";
 
 const Vaccine = () => {
@@ -10,15 +10,15 @@ const Vaccine = () => {
   useEffect(() => {
     switch (vaccine) {
       case "Covishield": {
-        setFieldValue("price", 780, true);
+        setFieldValue("price", vaccinePrice["Covishield"], true);
         break;
       }
       case "Covaxin": {
-        setFieldValue("price", 1170, true);
+        setFieldValue("price", vaccinePrice["Covaxin"], true);
         break;
       }
       case "Sputnik-V": {
-        setFieldValue("price", 650, true);
+        setFieldValue("price", vaccinePrice["Sputnik-V"], true);
         break;
       }
       default: {
