@@ -76,7 +76,9 @@ const initValues: TicketSchema = {
     if (typeof window !== "undefined") {
       const day = new window.Date();
       return `${day.getDate() < 10 ? "0" + day.getDate() : day.getDate()}/${
-        day.getMonth() < 10 ? "0" + day.getMonth() : day.getMonth()
+        day.getMonth() + 1 < 10
+          ? "0" + (day.getMonth() + 1)
+          : day.getMonth() + 1
       }/${
         day.getFullYear() < 10 ? "0" + day.getFullYear() : day.getFullYear()
       }`;
@@ -109,10 +111,14 @@ const Ticket = () => {
     if (typeof window !== "undefined") {
       const day = new window.Date();
       return `${day.getDate() < 10 ? "0" + day.getDate() : day.getDate()}/${
-        day.getMonth() < 10 ? "0" + day.getMonth() : day.getMonth()
+        day.getMonth() + 1 < 10
+          ? "0" + (day.getMonth() + 1)
+          : day.getMonth() + 1
       }/${
         day.getFullYear() < 10 ? "0" + day.getFullYear() : day.getFullYear()
       }`;
+    } else {
+      return "";
     }
   })();
   return (
