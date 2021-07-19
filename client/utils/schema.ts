@@ -115,3 +115,35 @@ export interface DBSchema {
     };
   };
 }
+
+export const RegistrationValidationSchema = yup
+  .object({
+    id: yup
+      .string()
+      .trim()
+      .matches(/^\d{5}$/, "ID must be 5 Digits."),
+    batchNumber: yup.string().trim().required("Batch Number is Required."),
+    sideEffects: yup
+      .string()
+      .trim()
+      .oneOf(["Y", "N"], "Side Effects must be Y or N.")
+      .required("Side Effects is Required."),
+    remarks: yup.string().trim(),
+  })
+  .test("XOR", "Either No Side Effects or Remarks are Required.", (values) => {
+    if (values.sideEffects === "N") {
+      return true;
+    } else if (
+      values.sideEffects === "Y" &&
+      values.remarks &&
+      values.remarks.length > 0
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+
+export type RegistrationSchema = yup.InferType<
+  typeof RegistrationValidationSchema
+>;

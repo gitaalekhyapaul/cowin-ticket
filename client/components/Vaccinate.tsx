@@ -68,7 +68,7 @@ const Vaccinate = () => {
               className="btn btn-success d-flex"
               onClick={() => fetchTickets()}
             >
-              <div className="spinner-border spinner-border-sm text-light my-auto mx-1"></div>
+              <div className="spinner-grow spinner-grow-sm text-light my-auto mx-1"></div>
               <div className="my-auto mx-1">
                 <span>
                   <strong>Refresh</strong>
@@ -94,8 +94,12 @@ const Vaccinate = () => {
             </div>
           </div>
           <div className="col-12 col-md-4 d-flex mt-5 mt-md-0">
-            <div className="row mx-auto my-auto">
-              <RightTab action={action} ticket={currTicket} />
+            <div className="row mx-auto my-auto w-100">
+              <RightTab
+                action={action}
+                ticket={currTicket}
+                resetTab={fetchTickets}
+              />
             </div>
           </div>
         </div>
