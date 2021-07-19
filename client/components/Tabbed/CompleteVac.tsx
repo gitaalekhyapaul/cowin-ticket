@@ -18,15 +18,8 @@ interface ComponentProps {
 }
 
 const Remarks = () => {
-  const {
-    values,
-    errors,
-    touched,
-    setTouched,
-    setFieldValue,
-    setFieldError,
-    setErrors,
-  } = useFormikContext<RegistrationSchema>();
+  const { values, errors, touched, setTouched, setFieldValue, setErrors } =
+    useFormikContext<RegistrationSchema>();
 
   useEffect(() => {
     if (values.sideEffects === "Y") {
@@ -56,14 +49,27 @@ const Remarks = () => {
   }
 };
 
+const ID = ({ setInitValues, ...props }: { [x: string]: any }) => {
+  const tabContext = useContext(TabContext);
+  const { setFieldValue } = useFormikContext();
+  useEffect(() => {
+    setFieldValue("id", (tabContext.ticket as DBSchema).id, true);
+  }, [tabContext]);
+  return (
+    <>
+      <Input label="ID" name="id" type="text" placeholder="ID" readOnly />
+    </>
+  );
+};
+
 const CompleteVac = ({ resetTab, ...props }: ComponentProps) => {
   const tabContext = useContext(TabContext);
-  const [initValues, setInitValues] = useState<RegistrationSchema>({
+  const initValues = {
     id: (tabContext.ticket as DBSchema).id,
     batchNumber: "",
     remarks: "-",
     sideEffects: "",
-  });
+  };
   const submitHandler = async (
     values: RegistrationSchema,
     hooks: {
@@ -104,13 +110,7 @@ const CompleteVac = ({ resetTab, ...props }: ComponentProps) => {
           <Form>
             <div className="row mx-auto mb-2">
               <div className="col-md-11 col-12">
-                <Input
-                  label="ID"
-                  name="id"
-                  type="text"
-                  placeholder="ID"
-                  readOnly
-                />
+                <ID />
               </div>
             </div>
             <div className="row mx-auto mb-2">
