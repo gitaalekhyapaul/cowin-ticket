@@ -118,5 +118,9 @@ export interface beneficiariesDB extends validateBeneficiaryRequest {
   status: {
     vaccinated: boolean;
     batchNumber: string;
+    sideEffects: {
+      occur: boolean;
+      remarks: string;
+    };
   };
 }
