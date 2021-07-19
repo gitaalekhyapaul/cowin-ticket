@@ -9,7 +9,17 @@ interface ComponentProps {
 }
 
 const RightTab = ({ action, ticket, ...props }: ComponentProps) => {
-  return <>Right Tab</>;
+  if (action === "" || Object.keys(ticket).length === 0) {
+    return (
+      <>
+        <h1 className="text-center">
+          <strong>Please Select a Card to Continue.</strong>
+        </h1>
+      </>
+    );
+  } else {
+    return <>Right Tab</>;
+  }
 };
 
 export default RightTab;

@@ -41,7 +41,7 @@ const Card = ({
           className="card-body row w-100 m-0"
           style={{ height: "25vh", overflowY: "auto" }}
         >
-          <span className="col-12">
+          <span className="col-12 mb-2">
             <p className="card-text">
               <strong>
                 Name:
@@ -50,7 +50,7 @@ const Card = ({
               {ticket.name}
             </p>
           </span>
-          <span className="col-12">
+          <span className="col-12 mb-2">
             <div className="row">
               <div className="col-12 col-md-6">
                 <p className="card-text">
@@ -72,7 +72,7 @@ const Card = ({
               </div>
             </div>
           </span>
-          <span className="col-12">
+          <span className="col-12 mb-2">
             <div className="row">
               <div className="col-12 col-md-6">
                 <p className="card-text">
@@ -94,7 +94,7 @@ const Card = ({
               </div>
             </div>
           </span>
-          <span className="col-12">
+          <span className="col-12 mb-2">
             <p className="card-text">
               <strong>
                 Address:
@@ -103,7 +103,7 @@ const Card = ({
               {ticket.address}
             </p>
           </span>
-          <span className="col-12">
+          <span className="col-12 mb-2">
             <div className="row">
               <div className="col-12 col-md-6">
                 <p className="card-text">
@@ -125,7 +125,7 @@ const Card = ({
               </div>
             </div>
           </span>
-          <span className="col-12">
+          <span className="col-12 mb-2">
             <div className="row">
               <div className="col-12 col-md-6">
                 <p className="card-text">

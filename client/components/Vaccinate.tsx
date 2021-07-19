@@ -93,7 +93,7 @@ const Vaccinate = () => {
               />
             </div>
           </div>
-          <div className="col-12 col-md-4 d-flex">
+          <div className="col-12 col-md-4 d-flex mt-5 mt-md-0">
             <div className="row mx-auto my-auto">
               <RightTab action={action} ticket={currTicket} />
             </div>
