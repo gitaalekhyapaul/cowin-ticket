@@ -115,4 +115,8 @@ export const dueDate: { [x: string]: { start: number; end: number } } = {
 
 export interface beneficiariesDB extends validateBeneficiaryRequest {
   id: string;
+  status: {
+    vaccinated: boolean;
+    batchNumber: string;
+  };
 }

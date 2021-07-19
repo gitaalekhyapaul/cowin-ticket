@@ -302,6 +302,10 @@ export const addBeneficiary = async (
   const { insertedId } = await db.insertOne({
     id: `${token}`,
     ...beneficiary,
+    status: {
+      vaccinated: false,
+      batchNumber: "",
+    },
   });
   return `${token}`;
 };
