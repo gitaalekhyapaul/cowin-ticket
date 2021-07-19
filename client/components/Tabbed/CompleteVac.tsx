@@ -72,7 +72,7 @@ const CompleteVac = ({ resetTab, ...props }: ComponentProps) => {
     }
   ) => {
     try {
-      const { data } = await API.post("/api//v1/update/vaccination", values);
+      const { data } = await API.post("/api/v1/update/vaccination", values);
       toast.success("Beneficiary Vaccinated!");
       hooks.setSubmitting(false);
       hooks.resetTab();
