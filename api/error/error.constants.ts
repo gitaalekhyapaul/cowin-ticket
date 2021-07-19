@@ -47,4 +47,8 @@ export const errors = {
     httpStatus: 400,
     message: "Invalid OTP.",
   },
+  INVALID_BENEFICIARY_UPDATE: {
+    httpStatus: 409,
+    message: "Beneficiary Does Not Exist / Already Registered.",
+  },
 };

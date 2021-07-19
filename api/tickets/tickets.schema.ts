@@ -6,7 +6,7 @@ export const getTicketRequestSchema = yup
       .string()
       .trim()
       .matches(
-        /^\d\d\/\d\d\/\d\d\d\d$/,
+        /^\d{2}\/\d{2}\/\d{4}$/,
         "date: Invalid Date Format. Valid Format: DD/MM/YYYY"
       ),
     vaccinated: yup.boolean().typeError("vaccinated: Should be boolean"),

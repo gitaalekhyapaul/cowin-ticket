@@ -7,6 +7,8 @@ dotenvConfig();
 
 import { errorHandler } from "./error/error.handler";
 import validateRoutes from "./validate/validate.routes";
+import ticketsRoutes from "./tickets/tickets.routes";
+import updateRoutes from "./update/update.routes";
 import { DatabaseService } from "./services/database.service";
 
 const app: Express = express();
@@ -14,6 +16,8 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/api/v1/validate", validateRoutes);
+app.use("/api/v1/tickets", ticketsRoutes);
+app.use("/api/v1/update", updateRoutes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(join(__dirname, "..", "client", "out")));
