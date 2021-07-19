@@ -38,7 +38,6 @@ const submitHandler = async (
       const ticketWindow = window.open();
       ticketWindow!.location.href = fileURL;
     }
-    console.dir(data);
     toast.success("Form successfully submitted!");
     hooks.setSubmitting(false);
     hooks.resetForm(initValues);

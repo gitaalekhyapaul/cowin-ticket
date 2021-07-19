@@ -1,9 +1,12 @@
 import Vaccinate from "../components/Vaccinate";
+import { TabContextProvider } from "../components/Stores/TabContext";
 
 const Vaccine = () => {
   return (
     <>
-      <Vaccinate />
+      <TabContextProvider>
+        <Vaccinate />
+      </TabContextProvider>
     </>
   );
 };

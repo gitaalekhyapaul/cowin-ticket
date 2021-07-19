@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { toast } from "react-toastify";
 import API from "../utils/api";
 
 import { DBSchema } from "../utils/schema";
 import { LeftTab, RightTab } from "./Tabbed";
+import { TabContext } from "./Stores/TabContext";
 
 const Vaccinate = () => {
+  const tabContext = useContext(TabContext);
   const currDate = (() => {
     if (typeof window !== "undefined") {
       const day = new window.Date();
@@ -21,20 +23,16 @@ const Vaccinate = () => {
     }
   })();
 
-  const [tickets, setTickets] = useState<DBSchema[]>([]);
-  const [action, setAction] = useState<string>("");
-  const [currTicket, setCurrTicket] = useState<DBSchema | {}>({});
-
   const fetchTickets = async () => {
     try {
-      setAction("");
-      setCurrTicket({});
+      tabContext.setAction("");
+      tabContext.setTicket({});
       const { data } = (await API.get(
         `/api/v1/tickets/get?vaccinated=false&date=${currDate}`
       )) as {
         data: { success: boolean; tickets: DBSchema[] };
       };
-      setTickets(data.tickets);
+      tabContext.setCards(data.tickets);
       toast.success("Data fetched successfully!");
     } catch (err) {
       console.dir(err.response);
@@ -86,20 +84,12 @@ const Vaccinate = () => {
             }}
           >
             <div className="row mx-auto my-auto">
-              <LeftTab
-                tickets={tickets}
-                setTicket={setCurrTicket}
-                setAction={setAction}
-              />
+              <LeftTab />
             </div>
           </div>
           <div className="col-12 col-md-4 d-flex mt-5 mt-md-0">
             <div className="row mx-auto my-auto w-100">
-              <RightTab
-                action={action}
-                ticket={currTicket}
-                resetTab={fetchTickets}
-              />
+              <RightTab resetTab={fetchTickets} />
             </div>
           </div>
         </div>

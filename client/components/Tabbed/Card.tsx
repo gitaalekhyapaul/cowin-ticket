@@ -1,24 +1,20 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+
+import { TabContext } from "../Stores/TabContext";
 import { DBSchema } from "../../utils/schema";
 
 interface ComponentProps {
   color: "warning" | "danger" | "success";
   ticket: DBSchema;
-  setTicket: (t: DBSchema) => void;
-  setAction: (a: string) => void;
   [x: string]: any;
 }
 
-const Card = ({
-  color,
-  ticket,
-  setAction,
-  setTicket,
-  ...props
-}: ComponentProps) => {
+const Card = ({ color, ticket, ...props }: ComponentProps) => {
+  const tabContext = useContext(TabContext);
+
   const executeCard = (action: "vaccination" | "registration") => {
-    setAction(action);
-    setTicket(ticket);
+    tabContext.setAction(action);
+    tabContext.setTicket(ticket);
   };
   return (
     <div className="col-12 col-md-6">

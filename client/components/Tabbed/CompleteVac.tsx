@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Formik, Form, useFormikContext } from "formik";
 import { toast } from "react-toastify";
 
@@ -9,15 +9,25 @@ import {
 } from "../../utils/schema";
 import { Input, Select, TextArea } from "../Inputs";
 import SubmitButton from "../SubmitButton";
+import { TabContext } from "../Stores/TabContext";
 
 interface ComponentProps {
-  ticket: DBSchema;
   resetTab: () => void;
   [x: string]: any;
 }
 
 const Remarks = () => {
-  const { values } = useFormikContext<RegistrationSchema>();
+  const { values, setFieldValue, setFieldError } =
+    useFormikContext<RegistrationSchema>();
+
+  useEffect(() => {
+    if (values.sideEffects === "Y") {
+      setFieldValue("remarks", "-", true);
+    } else {
+      setFieldValue("remarks", "---------------", true);
+    }
+  }, [values]);
+
   if (values.sideEffects === "Y") {
     return (
       <div className="row mx-auto mb-2">
@@ -32,17 +42,18 @@ const Remarks = () => {
       </div>
     );
   } else {
-    return <>LOLOLOL</>;
+    return <></>;
   }
 };
 
-const CompleteVac = ({ ticket, resetTab, ...props }: ComponentProps) => {
-  const initValues: RegistrationSchema = {
-    id: ticket.id,
+const CompleteVac = ({ resetTab, ...props }: ComponentProps) => {
+  const tabContext = useContext(TabContext);
+  const [initValues, setInitValues] = useState<RegistrationSchema>({
+    id: (tabContext.ticket as DBSchema).id,
     batchNumber: "",
     remarks: "",
     sideEffects: "",
-  };
+  });
   const submitHandler = async (
     values: RegistrationSchema,
     hooks: {
@@ -53,6 +64,7 @@ const CompleteVac = ({ ticket, resetTab, ...props }: ComponentProps) => {
     hooks.setSubmitting(false);
     hooks.resetTab();
   };
+
   return (
     <>
       <div className="col-md-10 col-11">
@@ -99,7 +111,7 @@ const CompleteVac = ({ ticket, resetTab, ...props }: ComponentProps) => {
               </div>
             </div>
             <Remarks />
-            <div className="row mx-auto mb-3 mt-5 d-flex justify-content-end">
+            <div className="row mx-auto mb-3 mt-5 d-flex align-center">
               <div className="col-md-6 col-12 mx-auto">
                 <SubmitButton />
               </div>

@@ -128,7 +128,10 @@ export const RegistrationValidationSchema = yup
       .trim()
       .oneOf(["Y", "N"], "Side Effects must be Y or N.")
       .required("Side Effects is Required."),
-    remarks: yup.string().trim(),
+    remarks: yup
+      .string()
+      .trim()
+      .min(10, "Remarks should be more than 10 Words."),
   })
   .test("XOR", "Either No Side Effects or Remarks are Required.", (values) => {
     if (values.sideEffects === "N") {
@@ -140,10 +143,13 @@ export const RegistrationValidationSchema = yup
     ) {
       return true;
     } else {
+      // return (this! as unknown as any).createError({
+      //   path: "sideEffects | remarks",
+      //   message: "Either No Side Effects or Remarks are Required.",
+      // });
       return false;
     }
   });
-
 export type RegistrationSchema = yup.InferType<
   typeof RegistrationValidationSchema
 >;

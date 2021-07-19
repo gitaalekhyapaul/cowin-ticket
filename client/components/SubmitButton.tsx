@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormikContext } from "formik";
 
 import { TicketSchema } from "../utils/schema";
 
 const SubmitButton = () => {
-  const { dirty, isValid } = useFormikContext<TicketSchema>();
+  const { dirty, isValid, values, validateForm } =
+    useFormikContext<TicketSchema>();
+  useEffect(() => {
+    validateForm();
+  }, [values]);
   if (!(dirty && isValid)) {
     return (
       <button disabled className="btn btn-danger">

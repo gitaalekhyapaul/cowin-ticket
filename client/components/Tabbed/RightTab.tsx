@@ -1,17 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import { DBSchema } from "../../utils/schema";
 import CompleteVac from "./CompleteVac";
+import { TabContext } from "../Stores/TabContext";
 
 interface ComponentProps {
-  action: string;
-  ticket: DBSchema | {};
   resetTab: () => void;
   [x: string]: any;
 }
 
-const RightTab = ({ action, ticket, resetTab, ...props }: ComponentProps) => {
-  if (action === "" || Object.keys(ticket).length === 0) {
+const RightTab = ({ resetTab, ...props }: ComponentProps) => {
+  const tabContext = useContext(TabContext);
+
+  if (tabContext.action === "" || Object.keys(tabContext.ticket).length === 0) {
     return (
       <>
         <h1 className="text-center">
@@ -19,10 +20,11 @@ const RightTab = ({ action, ticket, resetTab, ...props }: ComponentProps) => {
         </h1>
       </>
     );
-  } else if (action === "vaccination") {
-    return (
-      <CompleteVac ticket={ticket as unknown as DBSchema} resetTab={resetTab} />
-    );
+  } else if (
+    tabContext.action === "vaccination" &&
+    Object.keys(tabContext.ticket).length > 0
+  ) {
+    return <CompleteVac resetTab={resetTab} />;
   } else {
     return <>Right Tab</>;
   }
