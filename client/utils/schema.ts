@@ -86,3 +86,32 @@ export enum vaccinePrice {
   "Covaxin" = 1200,
   "Sputnik-V" = 650,
 }
+
+export interface DBSchema {
+  id: string;
+  name: string;
+  age: string;
+  gender: string;
+  address: string;
+  pincode: string;
+  po: string;
+  ps: string;
+  mobile: string;
+  dose: string;
+  cowin: {
+    registration: "Y" | "N";
+    beneficiaryId?: string;
+  };
+  vaccine: string;
+  price: number;
+  date: string;
+  time: string;
+  status: {
+    vaccinated: boolean;
+    batchNumber?: string;
+    sideEffects?: {
+      occur: boolean;
+      remarks: string;
+    };
+  };
+}
