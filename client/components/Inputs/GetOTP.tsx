@@ -73,9 +73,6 @@ const GetOTP = () => {
         txnId: txnId,
         code: cowin.code,
       })) as { data: { success: boolean; beneficiaryId: string } };
-      /**
-       * ! Code not working. See issue #2
-       */
       toast.success("OTP validated successfully!");
       setFieldValue("cowin.beneficiaryId", data.beneficiaryId, true);
       setFieldValue("cowin.validatedOtp", data.success, true);
