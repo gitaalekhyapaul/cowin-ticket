@@ -27,6 +27,8 @@ const Vaccinate = () => {
 
   const fetchTickets = async () => {
     try {
+      setAction("");
+      setCurrTicket({});
       const { data } = (await API.get(
         `/api/v1/tickets/get?vaccinated=false&date=${currDate}`
       )) as {
@@ -53,10 +55,10 @@ const Vaccinate = () => {
   return (
     <>
       <div className="col-md-10 col-11">
-        <div className="row mx-auto mb-0 mb-md-5">
+        <div className="row mx-auto mb-5">
           <div className="col my-auto mx-auto justify-content-end d-flex">
             <div className="row">
-              <h1>
+              <h1 className="m-0">
                 <strong>Vaccinate</strong>
               </h1>
             </div>
@@ -75,7 +77,7 @@ const Vaccinate = () => {
             </button>
           </div>
         </div>
-        <div className="row mx-auto text-center">
+        <div className="row mx-auto">
           <div
             className="col-12 col-md-8 d-flex"
             style={{
@@ -84,7 +86,11 @@ const Vaccinate = () => {
             }}
           >
             <div className="row mx-auto my-auto">
-              <LeftTab tickets={tickets} setTicket={setCurrTicket} />
+              <LeftTab
+                tickets={tickets}
+                setTicket={setCurrTicket}
+                setAction={setAction}
+              />
             </div>
           </div>
           <div className="col-12 col-md-4 d-flex">
