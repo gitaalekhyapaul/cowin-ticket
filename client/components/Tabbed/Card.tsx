@@ -38,7 +38,7 @@ const Card = ({
           </strong>
         </div>
         <div
-          className="card-body row"
+          className="card-body row w-100 m-0"
           style={{ height: "25vh", overflowY: "auto" }}
         >
           <span className="col-12">
