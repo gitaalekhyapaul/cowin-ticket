@@ -10,6 +10,7 @@ import {
 import { Input, Select, TextArea } from "../Inputs";
 import SubmitButton from "../SubmitButton";
 import { TabContext } from "../Stores/TabContext";
+import API from "../../utils/api";
 
 interface ComponentProps {
   resetTab: () => void;
@@ -17,14 +18,23 @@ interface ComponentProps {
 }
 
 const Remarks = () => {
-  const { values, setFieldValue, setFieldError } =
-    useFormikContext<RegistrationSchema>();
+  const {
+    values,
+    errors,
+    touched,
+    setTouched,
+    setFieldValue,
+    setFieldError,
+    setErrors,
+  } = useFormikContext<RegistrationSchema>();
 
   useEffect(() => {
     if (values.sideEffects === "Y") {
-      setFieldValue("remarks", "-", true);
-    } else {
-      setFieldValue("remarks", "---------------", true);
+      setTouched({ ...touched, remarks: true });
+      setErrors({ ...errors, remarks: "Enter Remarks!" });
+    } else if (values.sideEffects === "N" && values.remarks === "-") {
+      setFieldValue("remarks", "", true);
+    } else if (!touched.sideEffects && values.sideEffects === "Y") {
     }
   }, [values]);
 
@@ -51,7 +61,7 @@ const CompleteVac = ({ resetTab, ...props }: ComponentProps) => {
   const [initValues, setInitValues] = useState<RegistrationSchema>({
     id: (tabContext.ticket as DBSchema).id,
     batchNumber: "",
-    remarks: "",
+    remarks: "-",
     sideEffects: "",
   });
   const submitHandler = async (
@@ -61,8 +71,20 @@ const CompleteVac = ({ resetTab, ...props }: ComponentProps) => {
       resetTab: () => void;
     }
   ) => {
-    hooks.setSubmitting(false);
-    hooks.resetTab();
+    try {
+      const { data } = await API.post("/api//v1/update/vaccination", values);
+      toast.success("Beneficiary Vaccinated!");
+      hooks.setSubmitting(false);
+      hooks.resetTab();
+    } catch (err) {
+      if (typeof err.response.data === "string") {
+        toast.error(err.response.data);
+      } else if (typeof err.response.data.success !== "undefined") {
+        toast.error(err.response.data.error);
+      } else {
+        toast.error("Error in submitting form!");
+      }
+    }
   };
 
   return (
