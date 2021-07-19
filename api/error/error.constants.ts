@@ -51,4 +51,9 @@ export const errors = {
     httpStatus: 409,
     message: "Beneficiary Does Not Exist / Already Registered.",
   },
+  INVALID_VACCINATION_UPDATE: {
+    httpStatus: 409,
+    message:
+      "Beneficiary Does Not Exist / Not Registered / Already Vaccinated.",
+  },
 };

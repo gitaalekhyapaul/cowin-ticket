@@ -304,7 +304,6 @@ export const addBeneficiary = async (
     ...beneficiary,
     status: {
       vaccinated: false,
-      batchNumber: "",
     },
   });
   return `${token}`;
