@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 
-import { DBSchema } from "../../utils/schema";
 import CompleteVac from "./CompleteVac";
+import CompleteReg from "./CompleteReg";
 import { TabContext } from "../Stores/TabContext";
 
 interface ComponentProps {
@@ -26,7 +26,7 @@ const RightTab = ({ resetTab, ...props }: ComponentProps) => {
   ) {
     return <CompleteVac resetTab={resetTab} />;
   } else {
-    return <>Right Tab</>;
+    return <CompleteReg resetTab={resetTab} />;
   }
 };
 

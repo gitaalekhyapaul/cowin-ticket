@@ -116,7 +116,7 @@ export interface DBSchema {
   };
 }
 
-export const RegistrationValidationSchema = yup
+export const VaccinationValidationSchema = yup
   .object({
     id: yup
       .string()
@@ -143,13 +143,52 @@ export const RegistrationValidationSchema = yup
     ) {
       return true;
     } else {
-      // return (this! as unknown as any).createError({
-      //   path: "sideEffects | remarks",
-      //   message: "Either No Side Effects or Remarks are Required.",
-      // });
       return false;
     }
   });
+export type VaccinationSchema = yup.InferType<
+  typeof VaccinationValidationSchema
+>;
+
+export const RegistrationValidationSchema = yup.object({
+  id: yup
+    .string()
+    .trim()
+    .matches(/^\d{5}$/, "ID must be 5 Digits."),
+  mobile: yup
+    .string()
+    .trim()
+    .required("Mobile number is Required.")
+    .matches(/^[0-9]{10}$/, "Mobile number should be 10 digits."),
+  cowin: yup
+    .object({
+      registration: yup
+        .string()
+        .trim()
+        .oneOf(["Y", "N"], "Registration must be Y or N.")
+        .required("Registration is Required."),
+      code: yup
+        .string()
+        .trim()
+        .matches(/^[0-9]{4}$/, "CoWin Secret Code must be 4 digits."),
+      beneficiaryId: yup.string().trim(),
+      otp: yup
+        .string()
+        .trim()
+        .matches(/^[0-9]{6}$/, "OTP must be 6 digits."),
+      validatedOtp: yup.boolean().isTrue(),
+    })
+    .test("XOR", "Either Non-CoWin or Secret Code is Required.", (values) => {
+      if (values.registration === "Y" && values.code && values.beneficiaryId) {
+        return true;
+      } else if (values.registration === "N") {
+        return true;
+      } else {
+        return false;
+      }
+    }),
+});
+
 export type RegistrationSchema = yup.InferType<
   typeof RegistrationValidationSchema
 >;
