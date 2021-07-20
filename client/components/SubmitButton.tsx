@@ -12,13 +12,13 @@ const SubmitButton = () => {
   if (!(dirty && isValid)) {
     return (
       <button disabled className="btn btn-danger">
-        <span className="h1">Submit</span>
+        <span className="h3">Submit</span>
       </button>
     );
   } else {
     return (
       <button type="submit" className="btn btn-success">
-        <span className="h1">Submit</span>
+        <span className="h3">Submit</span>
       </button>
     );
   }

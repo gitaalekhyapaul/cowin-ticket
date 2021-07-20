@@ -7,7 +7,7 @@ import Clock from "./Clock";
 
 const TopBar = () => {
   return (
-    <Navbar bg="dark" variant="dark" expand="md" className="mb-5 mb-md-0">
+    <Navbar bg="dark" variant="dark" expand="md" className="mb-5 mb-md-0 sticky-top">
       <Container fluid={true}>
         <Link href="/" passHref>
           <Navbar.Brand style={{ cursor: "pointer" }}>

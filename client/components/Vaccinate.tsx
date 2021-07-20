@@ -55,7 +55,7 @@ const Vaccinate = () => {
 
   return (
     <>
-      <div className="col-md-10 col-11">
+      <div className="col-12 mb-5 my-md-3">
         <div className="row mx-auto mb-5">
           <div className="col my-auto mx-auto justify-content-end d-flex">
             <div className="row">
@@ -90,8 +90,14 @@ const Vaccinate = () => {
               <LeftTab />
             </div>
           </div>
-          <div className="col-12 col-md-4 d-flex mt-5 mt-md-0">
-            <div className="row mx-auto my-auto w-100">
+          <div
+            className="col-12 col-md-4 d-flex mt-5 mt-md-0"
+            style={{
+              height: "65vh",
+              overflowY: "auto",
+            }}
+          >
+            <div className="row mx-auto my-auto justify-content-center w-100">
               <RightTab resetTab={fetchTickets} />
             </div>
           </div>

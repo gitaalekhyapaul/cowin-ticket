@@ -130,8 +130,8 @@ const CompleteReg = ({ resetTab, ...props }: ComponentProps) => {
                 <CowinCode overwriteClass="col-md-12 mb-2" />
               </div>
             </div>
-            <div className="row mx-auto mb-3 mt-5 d-flex align-center">
-              <div className="col-md-6 col-12 mx-auto">
+            <div className="row mx-auto mb-3 mt-5 d-flex justify-content-center align-center">
+              <div className="col-md-6 col-12 text-center">
                 <SubmitButton />
               </div>
             </div>

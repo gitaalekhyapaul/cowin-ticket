@@ -136,9 +136,9 @@ const CompleteVac = ({ resetTab, ...props }: ComponentProps) => {
               </div>
             </div>
             <Remarks />
-            <div className="row mx-auto mb-3 mt-5 d-flex align-center">
-              <div className="col-md-6 col-12 mx-auto">
-                <SubmitButton />
+            <div className="row mx-auto mb-3 mt-5 d-flex justify-content-center align-center">
+              <div className="col-md-6 col-12 text-center">
+              <SubmitButton />
               </div>
             </div>
           </Form>

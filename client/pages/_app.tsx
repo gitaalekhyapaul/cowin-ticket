@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.css";
 
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -26,6 +27,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <div className="container home-wrapper">
         <Component {...pageProps} />
       </div>
+      <Footer />
     </>
   );
 }

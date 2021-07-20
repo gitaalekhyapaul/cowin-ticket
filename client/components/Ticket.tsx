@@ -125,7 +125,7 @@ const Ticket = () => {
   })();
   return (
     <>
-      <div className="col-md-10 col-11">
+      <div className="col-md-10 col-11 mb-5 mb-md-0">
         <div className="row mx-auto text-center mb-0 mb-md-5">
           <h1>
             <strong>Register</strong>

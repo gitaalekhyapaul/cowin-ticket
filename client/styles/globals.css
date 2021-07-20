@@ -8,7 +8,7 @@ body {
 
 .home-wrapper {
   min-width: 100vw;
-  min-height: 90vh;
+  min-height: 85vh;
   display: flex;
   justify-content: center;
   align-items: center;
