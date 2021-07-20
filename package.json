@@ -11,7 +11,10 @@
     "dev:client": "cd client && yarn dev",
     "build:client": "cd client && yarn build",
     "export:client": "cd client && yarn export",
-    "dev": "concurrently \"yarn dev:server\" \"yarn dev:client\""
+    "build": "yarn build:client && yarn export:client && yarn build:server",
+    "dev": "concurrently \"yarn dev:server\" \"yarn dev:client\"",
+    "postinstall": "cd client && yarn",
+    "production": "yarn && yarn build && yarn start:server"
   },
   "repository": {
     "type": "git",
