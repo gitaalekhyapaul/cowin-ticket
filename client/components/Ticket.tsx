@@ -1,7 +1,7 @@
 import React from "react";
 import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
-import { NextRouter, useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 import {
   Input,
@@ -17,58 +17,6 @@ import {
 import SubmitButton from "./SubmitButton";
 import { TicketSchema, TicketValidationSchema } from "../utils/schema";
 import APIService from "../utils/api";
-
-const submitHandler = async (
-  values: TicketSchema,
-  hooks: {
-    setSubmitting: (isSubmitting: boolean) => void;
-    resetForm: (nextState?: any) => void;
-    useRouter: () => NextRouter;
-  }
-) => {
-  const router = hooks.useRouter();
-  const payload = { ...values };
-  delete payload.cowin.code;
-  delete payload.cowin.otp;
-  delete payload.cowin.validatedOtp;
-  try {
-    let API;
-    try {
-      API = APIService();
-    } catch (err) {
-      router.push("/login");
-      toast.error("Session Expired! Please Login!");
-    } finally {
-      const { data } = await API?.post(
-        "/api/v1/validate/beneficiary",
-        payload,
-        {
-          responseType: "blob",
-        }
-      )!;
-      const file = new Blob([data], { type: "application/pdf" });
-      const fileURL = URL.createObjectURL(file);
-      if (typeof window !== "undefined") {
-        const ticketWindow = window.open();
-        ticketWindow!.location.href = fileURL;
-      }
-      toast.success("Form successfully submitted!");
-      hooks.setSubmitting(false);
-      hooks.resetForm(initValues);
-    }
-  } catch (err) {
-    if (err.response && typeof err.response.data === "string") {
-      toast.error(err.response.data);
-    } else if (
-      err.response &&
-      typeof err.response.data.success !== "undefined"
-    ) {
-      toast.error(err.response.data.error);
-    } else {
-      toast.error("Error in submitting form!");
-    }
-  }
-};
 
 const initValues: TicketSchema = {
   name: "",
@@ -116,6 +64,57 @@ const initValues: TicketSchema = {
 };
 
 const Ticket = () => {
+  const router = useRouter();
+  const submitHandler = async (
+    values: TicketSchema,
+    hooks: {
+      setSubmitting: (isSubmitting: boolean) => void;
+      resetForm: (nextState?: any) => void;
+    }
+  ) => {
+    const payload = { ...values };
+    delete payload.cowin.code;
+    delete payload.cowin.otp;
+    delete payload.cowin.validatedOtp;
+    try {
+      let API;
+      try {
+        API = APIService();
+      } catch (err) {
+        router.push("/login");
+        toast.error("Session Expired! Please Login!");
+      } finally {
+        const { data } = await API?.post(
+          "/api/v1/validate/beneficiary",
+          payload,
+          {
+            responseType: "blob",
+          }
+        )!;
+        const file = new Blob([data], { type: "application/pdf" });
+        const fileURL = URL.createObjectURL(file);
+        if (typeof window !== "undefined") {
+          const ticketWindow = window.open();
+          ticketWindow!.location.href = fileURL;
+        }
+        toast.success("Form successfully submitted!");
+        hooks.setSubmitting(false);
+        hooks.resetForm(initValues);
+      }
+    } catch (err) {
+      if (err.response && typeof err.response.data === "string") {
+        toast.error(err.response.data);
+      } else if (
+        err.response &&
+        typeof err.response.data.success !== "undefined"
+      ) {
+        toast.error(err.response.data.error);
+      } else {
+        toast.error("Error in submitting form!");
+      }
+    }
+  };
+
   const currTime = (() => {
     if (typeof window !== "undefined") {
       const day = new window.Date();
@@ -153,7 +152,6 @@ const Ticket = () => {
             submitHandler(values, {
               setSubmitting,
               resetForm,
-              useRouter,
             })
           }
         >
