@@ -2,7 +2,13 @@ import React from "react";
 import axios from "axios";
 import { decode, JwtPayload } from "jsonwebtoken";
 
-const API = () => {
+const API = (auth: boolean = true) => {
+  if (!auth) {
+    return axios.create({
+      baseURL:
+        process.env.NODE_ENV === "production" ? "" : "http://localhost:8000",
+    });
+  }
   const authToken = sessionStorage.getItem("authToken");
   if (!authToken) {
     throw "NotAuthenticatedError";
