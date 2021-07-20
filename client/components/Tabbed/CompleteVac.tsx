@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
+import { useRouter } from "next/router";
 import { Formik, Form, useFormikContext } from "formik";
 import { toast } from "react-toastify";
 
@@ -10,7 +11,7 @@ import {
 import { Input, Select, TextArea } from "../Inputs";
 import SubmitButton from "../SubmitButton";
 import { TabContext } from "../Stores/TabContext";
-import API from "../../utils/api";
+import APIService from "../../utils/api";
 
 interface ComponentProps {
   resetTab: () => void;
@@ -63,6 +64,7 @@ const ID = ({ setInitValues, ...props }: { [x: string]: any }) => {
 };
 
 const CompleteVac = ({ resetTab, ...props }: ComponentProps) => {
+  const router = useRouter();
   const tabContext = useContext(TabContext);
   const initValues = {
     id: (tabContext.ticket as DBSchema).id,
@@ -78,10 +80,18 @@ const CompleteVac = ({ resetTab, ...props }: ComponentProps) => {
     }
   ) => {
     try {
-      const { data } = await API.post("/api/v1/update/vaccination", values);
-      toast.success("Beneficiary Vaccinated!");
-      hooks.setSubmitting(false);
-      hooks.resetTab();
+      let API;
+      try {
+        API = APIService();
+      } catch (err) {
+        router.push("/login");
+        toast.error("Session Expired! Please Login!");
+      } finally {
+        const { data } = await API?.post("/api/v1/update/vaccination", values)!;
+        toast.success("Beneficiary Vaccinated!");
+        hooks.setSubmitting(false);
+        hooks.resetTab();
+      }
     } catch (err) {
       if (err.response && typeof err.response.data === "string") {
         toast.error(err.response.data);
@@ -138,7 +148,7 @@ const CompleteVac = ({ resetTab, ...props }: ComponentProps) => {
             <Remarks />
             <div className="row mx-auto mb-3 mt-5 d-flex justify-content-center align-center">
               <div className="col-md-6 col-12 text-center">
-              <SubmitButton />
+                <SubmitButton />
               </div>
             </div>
           </Form>

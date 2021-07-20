@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
 import { Navbar, Nav, Container } from "react-bootstrap";
+import { AuthContext } from "./Stores/AuthContext";
 
 import Logo from "./Logo";
 import Clock from "./Clock";
 
 const TopBar = () => {
+  const authContext = useContext(AuthContext);
   return (
     <Navbar
       bg="dark"
@@ -23,21 +25,50 @@ const TopBar = () => {
           </Navbar.Brand>
         </Link>
         <Navbar.Toggle />
-        <Navbar.Collapse style={{ textDecoration: "none", color: "white" }}>
-          <Link href="/" passHref>
-            <Nav.Link>
-              <div style={{ color: "white" }}>
-                <strong>Register</strong>
-              </div>
-            </Nav.Link>
-          </Link>
-          <Link href="/vaccinate" passHref>
-            <Nav.Link>
-              <div style={{ color: "white" }}>
-                <strong>Vaccinate</strong>
-              </div>
-            </Nav.Link>
-          </Link>
+
+        <Navbar.Collapse
+          className="justify-content-around"
+          style={{ textDecoration: "none", color: "white" }}
+        >
+          {authContext.auth ? (
+            <>
+              <Link href="/" passHref>
+                <Nav.Link>
+                  <div style={{ color: "white" }}>
+                    <button className="btn btn-outline-secondary text-white w-100">
+                      <strong>Register</strong>
+                    </button>
+                  </div>
+                </Nav.Link>
+              </Link>
+              <Link href="/vaccinate" passHref>
+                <Nav.Link>
+                  <div style={{ color: "white" }}>
+                    <button className="btn btn-outline-secondary text-white w-100">
+                      <strong>Vaccinate</strong>
+                    </button>
+                  </div>
+                </Nav.Link>
+              </Link>
+              <Nav.Link>
+                <button className="btn btn-danger w-100">
+                  <strong>Logout</strong>
+                </button>
+              </Nav.Link>
+            </>
+          ) : (
+            <>
+              <Link href="/login" passHref>
+                <Nav.Link>
+                  <div style={{ color: "white" }}>
+                    <button className="btn btn-outline-secondary text-white w-100">
+                      <strong>Login</strong>
+                    </button>
+                  </div>
+                </Nav.Link>
+              </Link>
+            </>
+          )}
         </Navbar.Collapse>
         <Nav.Link className="ml-auto m-0 p-0 d-none d-md-block">
           <Clock />

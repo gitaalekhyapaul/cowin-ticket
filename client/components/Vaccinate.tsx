@@ -1,12 +1,14 @@
 import React, { useContext, useEffect } from "react";
 import { toast } from "react-toastify";
-import API from "../utils/api";
+import { useRouter } from "next/router";
 
+import APIService from "../utils/api";
 import { DBSchema } from "../utils/schema";
 import { LeftTab, RightTab } from "./Tabbed";
 import { TabContext } from "./Stores/TabContext";
 
 const Vaccinate = () => {
+  const router = useRouter();
   const tabContext = useContext(TabContext);
   const currDate = (() => {
     if (typeof window !== "undefined") {
@@ -27,13 +29,21 @@ const Vaccinate = () => {
     try {
       tabContext.setAction("");
       tabContext.setTicket({});
-      const { data } = (await API.get(
-        `/api/v1/tickets/get?vaccinated=false&date=${currDate}`
-      )) as {
-        data: { success: boolean; tickets: DBSchema[] };
-      };
-      tabContext.setCards(data.tickets);
-      toast.success("Data fetched successfully!");
+      let API;
+      try {
+        API = APIService();
+      } catch (err) {
+        router.push("/login");
+        toast.error("Session Expired! Please Login!");
+      } finally {
+        const { data } = (await API?.get(
+          `/api/v1/tickets/get?vaccinated=false&date=${currDate}`
+        )) as {
+          data: { success: boolean; tickets: DBSchema[] };
+        };
+        tabContext.setCards(data.tickets);
+        toast.success("Data fetched successfully!");
+      }
     } catch (err) {
       console.dir(err.response);
       if (err.response && typeof err.response.data === "string") {
