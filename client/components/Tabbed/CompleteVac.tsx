@@ -83,9 +83,12 @@ const CompleteVac = ({ resetTab, ...props }: ComponentProps) => {
       hooks.setSubmitting(false);
       hooks.resetTab();
     } catch (err) {
-      if (typeof err.response.data === "string") {
+      if (err.response && typeof err.response.data === "string") {
         toast.error(err.response.data);
-      } else if (typeof err.response.data.success !== "undefined") {
+      } else if (
+        err.response &&
+        typeof err.response.data.success !== "undefined"
+      ) {
         toast.error(err.response.data.error);
       } else {
         toast.error("Error in submitting form!");

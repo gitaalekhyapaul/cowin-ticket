@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Formik, Form, useFormikContext } from "formik";
 import { toast } from "react-toastify";
 
@@ -32,10 +32,9 @@ const ID = () => {
 
 const Mobile = () => {
   const tabContext = useContext(TabContext);
-  const { setFieldValue, setFieldTouched } = useFormikContext();
+  const { setFieldValue } = useFormikContext();
   useEffect(() => {
-    setFieldValue("mobile", (tabContext.ticket as DBSchema).mobile, true);
-    setFieldTouched("mobile", true);
+    setFieldValue("mobile", (tabContext.ticket as DBSchema).mobile, false);
   }, [tabContext]);
   return (
     <>
@@ -45,6 +44,9 @@ const Mobile = () => {
         type="text"
         placeholder="9876543210"
       />
+      <small className="d-block text-center text-danger">
+        Re-enter the last digit if &apos;Get OTP&apos; button disabled.
+      </small>
     </>
   );
 };
@@ -53,7 +55,7 @@ const CompleteReg = ({ resetTab, ...props }: ComponentProps) => {
   const tabContext = useContext(TabContext);
   const initValues = {
     id: (tabContext.ticket as DBSchema).id,
-    mobile: (tabContext.ticket as DBSchema).mobile,
+    mobile: "",
     cowin: {
       registration: "Y",
       code: "",
@@ -71,14 +73,20 @@ const CompleteReg = ({ resetTab, ...props }: ComponentProps) => {
   ) => {
     try {
       console.log(values);
-      // const { data } = await API.post("/api/v1/update/vaccination", values);
-      // toast.success("Beneficiary Vaccinated!");
+      const { data } = await API.post("/api/v1/update/beneficiary", {
+        id: values.id,
+        beneficiaryId: values.cowin.beneficiaryId,
+      });
+      toast.success("Beneficiary Registered!");
       hooks.setSubmitting(false);
       hooks.resetTab();
     } catch (err) {
-      if (typeof err.response.data === "string") {
+      if (err.response && typeof err.response.data === "string") {
         toast.error(err.response.data);
-      } else if (typeof err.response.data.success !== "undefined") {
+      } else if (
+        err.response &&
+        typeof err.response.data.success !== "undefined"
+      ) {
         toast.error(err.response.data.error);
       } else {
         toast.error("Error in submitting form!");
@@ -92,7 +100,6 @@ const CompleteReg = ({ resetTab, ...props }: ComponentProps) => {
         <Formik
           initialValues={initValues}
           validationSchema={RegistrationValidationSchema}
-          validateOnMount={true}
           onSubmit={(values, { setSubmitting }) => {
             submitHandler(values, {
               setSubmitting,
