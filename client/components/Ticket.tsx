@@ -1,6 +1,7 @@
 import React from "react";
 import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
+import { NextRouter, useRouter } from "next/router";
 
 import {
   Input,
@@ -15,32 +16,46 @@ import {
 } from "./Inputs";
 import SubmitButton from "./SubmitButton";
 import { TicketSchema, TicketValidationSchema } from "../utils/schema";
-import API from "../utils/api";
+import APIService from "../utils/api";
 
 const submitHandler = async (
   values: TicketSchema,
   hooks: {
     setSubmitting: (isSubmitting: boolean) => void;
     resetForm: (nextState?: any) => void;
+    useRouter: () => NextRouter;
   }
 ) => {
+  const router = hooks.useRouter();
   const payload = { ...values };
   delete payload.cowin.code;
   delete payload.cowin.otp;
   delete payload.cowin.validatedOtp;
   try {
-    const { data } = await API.post("/api/v1/validate/beneficiary", payload, {
-      responseType: "blob",
-    });
-    const file = new Blob([data], { type: "application/pdf" });
-    const fileURL = URL.createObjectURL(file);
-    if (typeof window !== "undefined") {
-      const ticketWindow = window.open();
-      ticketWindow!.location.href = fileURL;
+    let API;
+    try {
+      API = APIService();
+    } catch (err) {
+      router.push("/login");
+      toast.error("Session Expired! Please Login!");
+    } finally {
+      const { data } = await API?.post(
+        "/api/v1/validate/beneficiary",
+        payload,
+        {
+          responseType: "blob",
+        }
+      )!;
+      const file = new Blob([data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      if (typeof window !== "undefined") {
+        const ticketWindow = window.open();
+        ticketWindow!.location.href = fileURL;
+      }
+      toast.success("Form successfully submitted!");
+      hooks.setSubmitting(false);
+      hooks.resetForm(initValues);
     }
-    toast.success("Form successfully submitted!");
-    hooks.setSubmitting(false);
-    hooks.resetForm(initValues);
   } catch (err) {
     if (err.response && typeof err.response.data === "string") {
       toast.error(err.response.data);
@@ -138,6 +153,7 @@ const Ticket = () => {
             submitHandler(values, {
               setSubmitting,
               resetForm,
+              useRouter,
             })
           }
         >

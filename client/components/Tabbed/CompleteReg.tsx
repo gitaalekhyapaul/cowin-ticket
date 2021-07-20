@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { Formik, Form, useFormikContext } from "formik";
+import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 
 import {
@@ -10,7 +11,7 @@ import {
 import { Input, GetOTP, CowinCode } from "../Inputs";
 import SubmitButton from "../SubmitButton";
 import { TabContext } from "../Stores/TabContext";
-import API from "../../utils/api";
+import APIService from "../../utils/api";
 
 interface ComponentProps {
   resetTab: () => void;
@@ -52,6 +53,7 @@ const Mobile = () => {
 };
 
 const CompleteReg = ({ resetTab, ...props }: ComponentProps) => {
+  const router = useRouter();
   const tabContext = useContext(TabContext);
   const initValues = {
     id: (tabContext.ticket as DBSchema).id,
@@ -72,14 +74,21 @@ const CompleteReg = ({ resetTab, ...props }: ComponentProps) => {
     }
   ) => {
     try {
-      console.log(values);
-      const { data } = await API.post("/api/v1/update/beneficiary", {
-        id: values.id,
-        beneficiaryId: values.cowin.beneficiaryId,
-      });
-      toast.success("Beneficiary Registered!");
-      hooks.setSubmitting(false);
-      hooks.resetTab();
+      let API;
+      try {
+        API = APIService();
+      } catch (err) {
+        router.push("/login");
+        toast.error("Session Expired! Please Login!");
+      } finally {
+        const { data } = await API?.post("/api/v1/update/beneficiary", {
+          id: values.id,
+          beneficiaryId: values.cowin.beneficiaryId,
+        })!;
+        toast.success("Beneficiary Registered!");
+        hooks.setSubmitting(false);
+        hooks.resetTab();
+      }
     } catch (err) {
       if (err.response && typeof err.response.data === "string") {
         toast.error(err.response.data);

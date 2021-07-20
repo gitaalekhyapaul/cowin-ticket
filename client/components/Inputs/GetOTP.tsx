@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useFormikContext } from "formik";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 import { TicketSchema } from "../../utils/schema";
-import API from "../../utils/api";
+import APIService from "../../utils/api";
 
 const GetOTP = () => {
+  const router = useRouter();
   const [txnId, setTxnId] = useState("");
   const [disabled, setDisabled] = useState<{
     getOtp: boolean;
@@ -68,14 +70,22 @@ const GetOTP = () => {
   const validateOTPHandler = async () => {
     setDisabled({ ...disabled, validateOtp: true });
     try {
-      const { data } = (await API.post("/api/v1/validate/otp", {
-        otp: cowin.otp,
-        txnId: txnId,
-        code: cowin.code,
-      })) as { data: { success: boolean; beneficiaryId: string } };
-      toast.success("OTP validated successfully!");
-      setFieldValue("cowin.beneficiaryId", data.beneficiaryId, true);
-      setFieldValue("cowin.validatedOtp", data.success, true);
+      let API;
+      try {
+        API = APIService();
+      } catch (err) {
+        router.push("/login");
+        toast.error("Session Expired! Please Login!");
+      } finally {
+        const { data } = (await API?.post("/api/v1/validate/otp", {
+          otp: cowin.otp,
+          txnId: txnId,
+          code: cowin.code,
+        })) as { data: { success: boolean; beneficiaryId: string } };
+        toast.success("OTP validated successfully!");
+        setFieldValue("cowin.beneficiaryId", data.beneficiaryId, true);
+        setFieldValue("cowin.validatedOtp", data.success, true);
+      }
     } catch (err) {
       console.dir(err.response);
       if (err.response && typeof err.response.data === "string") {
