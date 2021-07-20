@@ -7,7 +7,12 @@ import Clock from "./Clock";
 
 const TopBar = () => {
   return (
-    <Navbar bg="dark" variant="dark" expand="md" className="mb-5 mb-md-0 sticky-top">
+    <Navbar
+      bg="dark"
+      variant="dark"
+      expand="md"
+      className="mb-5 mb-md-0 sticky-top"
+    >
       <Container fluid={true}>
         <Link href="/" passHref>
           <Navbar.Brand style={{ cursor: "pointer" }}>
@@ -21,16 +26,16 @@ const TopBar = () => {
         <Navbar.Collapse style={{ textDecoration: "none", color: "white" }}>
           <Link href="/" passHref>
             <Nav.Link>
-              <span style={{ color: "white" }}>
+              <div style={{ color: "white" }}>
                 <strong>Register</strong>
-              </span>
+              </div>
             </Nav.Link>
           </Link>
           <Link href="/vaccinate" passHref>
             <Nav.Link>
-              <span style={{ color: "white" }}>
+              <div style={{ color: "white" }}>
                 <strong>Vaccinate</strong>
-              </span>
+              </div>
             </Nav.Link>
           </Link>
         </Navbar.Collapse>
