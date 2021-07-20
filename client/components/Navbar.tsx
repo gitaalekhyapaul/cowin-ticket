@@ -13,6 +13,7 @@ const TopBar = () => {
   const logoutHandler = () => {
     sessionStorage.clear();
     router.push("/");
+    router.reload();
   };
 
   return (
