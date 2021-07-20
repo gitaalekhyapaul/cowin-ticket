@@ -4,7 +4,12 @@ import { TicketSchema } from "../../utils/schema";
 
 import Input from "./Input";
 
-const CowinCode = () => {
+interface ComponentProps {
+  overwriteClass?: string;
+  [x: string]: any;
+}
+
+const CowinCode = ({ overwriteClass, ...props }: ComponentProps) => {
   const { values, setFieldValue } = useFormikContext<TicketSchema>();
   const { cowin } = values;
   useEffect(() => {
@@ -17,7 +22,11 @@ const CowinCode = () => {
   if (cowin.registration === "Y") {
     return (
       <>
-        <div className="col-12 col-md-6">
+        <div
+          className={
+            overwriteClass ? `col-12 ${overwriteClass}` : "col-12 col-md-6"
+          }
+        >
           <Input
             label="Co-WIN Secret Code"
             name="cowin.code"
@@ -25,7 +34,11 @@ const CowinCode = () => {
             placeholder="0000"
           />
         </div>
-        <div className="col-12 col-md-6">
+        <div
+          className={
+            overwriteClass ? `col-12 ${overwriteClass}` : "col-12 col-md-6"
+          }
+        >
           <Input
             label="Mobile OTP"
             name="cowin.otp"

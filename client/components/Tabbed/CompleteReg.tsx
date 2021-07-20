@@ -112,13 +112,17 @@ const CompleteReg = ({ resetTab, ...props }: ComponentProps) => {
               </div>
             </div>
             <div className="row mx-auto mb-2">
-              <div className="col-md-11 col-12">
-                <GetOTP />
+              <div className="col-md-11 col-12 d-flex align-center">
+                <div className="row mx-auto text-center ">
+                  <GetOTP />
+                </div>
               </div>
             </div>
-            <div className="row mx-0 mb-2">
-              <div className="col-md-11 col-12">
-                <CowinCode />
+            <div className="row mx-auto mb-2">
+              <div className="col-md-11 col-12 w-100">
+                <div className="row mx-auto small">
+                  <CowinCode overwriteClass="col-md-12 mb-2" />
+                </div>
               </div>
             </div>
             <div className="row mx-auto mb-3 mt-5 d-flex align-center">
