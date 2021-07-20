@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 
 import validateQuery from "../middlewares/validate-query";
+import { validateJwt } from "../middlewares/validate-jwt";
 import {
   updateBeneficiaryRequest,
   updateBeneficiaryRequestSchema,
@@ -54,12 +55,14 @@ const handlePostUpdateVaccination = async (
 
 router.post(
   "/beneficiary",
+  validateJwt(),
   validateQuery("body", updateBeneficiaryRequestSchema),
   handlePostUpdateBeneficiary
 );
 
 router.post(
   "/vaccination",
+  validateJwt(),
   validateQuery("body", updateVaccinationRequestSchema),
   handlePostUpdateVaccination
 );

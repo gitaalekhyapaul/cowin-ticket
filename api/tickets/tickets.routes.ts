@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 
 import validateQuery from "../middlewares/validate-query";
+import { validateJwt } from "../middlewares/validate-jwt";
 import { getTicketRequest, getTicketRequestSchema } from "./tickets.schema";
 import { getTickets } from "./tickets.service";
 
@@ -26,6 +27,7 @@ const handleGetTickets = async (
 router.get(
   "/get",
   validateQuery("query", getTicketRequestSchema),
+  validateJwt(),
   handleGetTickets
 );
 

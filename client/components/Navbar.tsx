@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { AuthContext } from "./Stores/AuthContext";
 
@@ -8,6 +9,12 @@ import Clock from "./Clock";
 
 const TopBar = () => {
   const authContext = useContext(AuthContext);
+  const router = useRouter();
+  const logoutHandler = () => {
+    sessionStorage.clear();
+    router.push("/");
+  };
+
   return (
     <Navbar
       bg="dark"
@@ -51,7 +58,10 @@ const TopBar = () => {
                 </Nav.Link>
               </Link>
               <Nav.Link>
-                <button className="btn btn-danger w-100">
+                <button
+                  className="btn btn-danger w-100"
+                  onClick={() => logoutHandler()}
+                >
                   <strong>Logout</strong>
                 </button>
               </Nav.Link>

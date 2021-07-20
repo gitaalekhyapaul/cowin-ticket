@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 
+import { validateJwt } from "../middlewares/validate-jwt";
 import validateQuery from "../middlewares/validate-query";
 import {
   validateOTPRequest,
@@ -57,11 +58,13 @@ const handleValidateBeneficiary = async (
 
 router.post(
   "/otp",
+  validateJwt(),
   validateQuery("body", validateOTPRequestSchema),
   handleValidateOtp
 );
 router.post(
   "/beneficiary",
+  validateJwt(),
   validateQuery("body", validateBeneficiaryRequestSchema),
   handleValidateBeneficiary
 );

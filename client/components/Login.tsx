@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { toast } from "react-toastify";
 import { Form, Formik } from "formik";
 import * as yup from "yup";
@@ -13,13 +13,19 @@ const Login = () => {
   const router = useRouter();
   const API = APIService(false);
   const authContext = useContext(AuthContext);
+
+  useEffect(() => {
+    authContext.setAuth(false);
+  }, []);
+
   const submitHandler = async (
-    values: { password: string },
+    values: { username: string; password: string },
     setSubmitting: (isSubmitting: boolean) => void
   ) => {
-    const { password } = values;
+    const { username, password } = values;
     try {
       const { data } = (await API.post("/api/v1/admin/login", {
+        username,
         password,
       })) as { data: { authToken: string } };
       authContext.setAuth(true);
@@ -51,8 +57,9 @@ const Login = () => {
               </h1>
             </div>
             <Formik
-              initialValues={{ password: "" }}
+              initialValues={{ username: "", password: "" }}
               validationSchema={yup.object({
+                username: yup.string().trim().required("Username is Required."),
                 password: yup.string().trim().required("Password is Required."),
               })}
               onSubmit={(values, { setSubmitting }) => {
@@ -60,6 +67,14 @@ const Login = () => {
               }}
             >
               <Form>
+                <div className="col-12">
+                  <Input
+                    label="Username"
+                    name="username"
+                    type="text"
+                    placeholder="staff"
+                  />
+                </div>
                 <div className="col-12">
                   <Input label="Password" name="password" type="password" />
                 </div>

@@ -2,11 +2,8 @@ import { verify } from "jsonwebtoken";
 import * as yup from "yup";
 import { Request, Response, NextFunction } from "express";
 import { errors } from "../error/error.constants";
-/**
- * TODO: Apply userInfo from auth Schema
- */
-// import { userInfo } from "../auth/auth.schema";
-interface userInfo {}
+
+import { userInfo } from "../admin/admin.schema";
 
 export const JwtRequestSchema = yup
   .object({
@@ -34,7 +31,7 @@ export const validateJwt = (checkRequired: boolean = true) => {
       const authToken = authorization.split(" ")[1];
       const payload: userInfo = verify(
         authToken,
-        process.env.JWT_SECRET!
+        process.env.SECRET_KEY!
       ) as userInfo;
       res.locals.user = {
         ...payload,
