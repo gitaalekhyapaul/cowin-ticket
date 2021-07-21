@@ -7,6 +7,11 @@ import { AuthContext } from "./Stores/AuthContext";
 import Logo from "./Logo";
 import Clock from "./Clock";
 
+const Role = () => {
+  const authContext = useContext(AuthContext);
+  return authContext.auth ? <>{authContext.role.toUpperCase()}</> : <></>;
+};
+
 const TopBar = () => {
   const authContext = useContext(AuthContext);
   const router = useRouter();
@@ -28,6 +33,11 @@ const TopBar = () => {
             <Logo />
             <span className="d-md-none mx-3">
               <strong>Eve&apos;s Clinic Portal</strong>
+            </span>
+            <span className="mx-3">
+              <strong>
+                <Role />
+              </strong>
             </span>
           </Navbar.Brand>
         </Link>
