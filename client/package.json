@@ -10,7 +10,6 @@
     "export": "next export"
   },
   "dependencies": {
-    "@types/react-select": "^4.0.16",
     "axios": "^0.21.1",
     "bootstrap": "^5.0.2",
     "formik": "^2.2.9",
