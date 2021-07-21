@@ -4,7 +4,12 @@ import { useFormikContext } from "formik";
 import Input from "./Input";
 import { TicketSchema } from "../../utils/schema";
 
-const Date = ({ currDate, ...props }: { [x: string]: any }) => {
+interface ComponentProps {
+  currDate: string;
+  [x: string]: any;
+}
+
+const Date = ({ currDate, ...props }: ComponentProps) => {
   const { values, setFieldValue } = useFormikContext<TicketSchema>();
   useEffect(() => {
     if (currDate) {
