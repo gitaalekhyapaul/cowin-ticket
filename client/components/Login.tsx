@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { toast } from "react-toastify";
 import { Form, Formik } from "formik";
 import * as yup from "yup";
+import { decode } from "jsonwebtoken";
 import { useRouter } from "next/router";
 
 import APIService from "../utils/api";
@@ -28,7 +29,9 @@ const Login = () => {
         username,
         password,
       })) as { data: { authToken: string } };
+      const { user } = decode(data.authToken) as { user: string };
       authContext.setAuth(true);
+      authContext.setRole(user);
       sessionStorage.setItem("authToken", data.authToken);
       router.push("/");
       toast.success("Login Successful!");

@@ -72,6 +72,9 @@ const Ticket = () => {
     const checkAuth = () => {
       try {
         const API = APIService();
+        if (!tabContext.auth) {
+          throw "Not Authenticated!";
+        }
       } catch (err) {
         router.push("/login");
         toast.error("Session Expired! Please Login!");
