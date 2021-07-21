@@ -152,12 +152,16 @@ const Card = ({ color, ticket, ...props }: ComponentProps) => {
             >
               Complete Vaccination
             </button>
-          ) : (
+          ) : color === "danger" ? (
             <button
               className="btn btn-warning"
               onClick={() => executeCard("registration")}
             >
               Complete Registration
+            </button>
+          ) : (
+            <button className="btn btn-outline-light text-white" disabled>
+              Vaccinated
             </button>
           )}
         </div>
