@@ -109,6 +109,11 @@ const CompleteVac = ({ resetTab, ...props }: ComponentProps) => {
   return (
     <>
       <div className="col-md-10 col-11">
+        <div className="row mx-auto mb-2">
+          <div className="col-md-11 col-12 text-center h5">
+            <strong>Complete Vaccination</strong>
+          </div>
+        </div>
         <Formik
           initialValues={initValues}
           validationSchema={VaccinationValidationSchema}
@@ -146,7 +151,7 @@ const CompleteVac = ({ resetTab, ...props }: ComponentProps) => {
               </div>
             </div>
             <Remarks />
-            <div className="row mx-auto mb-3 mt-5 d-flex justify-content-center align-center">
+            <div className="row mx-auto mb-3 mt-3 d-flex justify-content-center align-center">
               <div className="col-md-6 col-12 text-center">
                 <SubmitButton />
               </div>
