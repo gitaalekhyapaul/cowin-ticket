@@ -7,6 +7,7 @@ import CowinCode from "./CowinCode";
 import Date from "./Date";
 import Time from "./Time";
 import GetOTP from "./GetOTP";
+import DateTime from "./DateTime";
 
 export {
   Input,
@@ -18,4 +19,5 @@ export {
   Date,
   Time,
   GetOTP,
+  DateTime,
 };
