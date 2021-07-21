@@ -34,7 +34,7 @@ const TopBar = () => {
             <span className="d-md-none mx-3">
               <strong>Eve&apos;s Clinic Portal</strong>
             </span>
-            <span className="mx-3">
+            <span className="d-none d-md-inline mx-3">
               <strong>
                 <Role />
               </strong>
@@ -67,6 +67,19 @@ const TopBar = () => {
                   </div>
                 </Nav.Link>
               </Link>
+              {authContext.role === "admin" ? (
+                <Link href="/reports" passHref>
+                  <Nav.Link>
+                    <div style={{ color: "white" }}>
+                      <button className="btn btn-outline-secondary text-white w-100">
+                        <strong>Reports</strong>
+                      </button>
+                    </div>
+                  </Nav.Link>
+                </Link>
+              ) : (
+                <></>
+              )}
               <Nav.Link>
                 <button
                   className="btn btn-danger w-100"
