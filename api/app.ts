@@ -25,7 +25,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(join(__dirname, "..", "client", "out")));
   app.use("*", (req: Request, res: Response, next: NextFunction) => {
     try {
-      res.render(join(__dirname, "..", "client", "out", "index.html"));
+      res.sendFile(join(__dirname, "..", "client", "out", "index.html"));
     } catch (err) {
       next(err);
     }
