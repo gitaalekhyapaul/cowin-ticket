@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
@@ -17,6 +17,7 @@ import {
 import SubmitButton from "./SubmitButton";
 import { TicketSchema, TicketValidationSchema } from "../utils/schema";
 import APIService from "../utils/api";
+import { AuthContext } from "./Stores/AuthContext";
 
 const initValues: TicketSchema = {
   name: "",
@@ -65,6 +66,20 @@ const initValues: TicketSchema = {
 
 const Ticket = () => {
   const router = useRouter();
+  const tabContext = useContext(AuthContext);
+
+  useEffect(() => {
+    const checkAuth = () => {
+      try {
+        const API = APIService();
+      } catch (err) {
+        router.push("/login");
+        toast.error("Session Expired! Please Login!");
+      }
+    };
+    checkAuth();
+  }, []);
+
   const submitHandler = async (
     values: TicketSchema,
     hooks: {
@@ -137,6 +152,7 @@ const Ticket = () => {
       return "";
     }
   })();
+
   return (
     <>
       <div className="col-md-10 col-11 mb-5 mb-md-0">
