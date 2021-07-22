@@ -41,7 +41,7 @@ export const errors = {
   },
   INVALID_BENEFICIARY: {
     httpStatus: 400,
-    message: "Beneficiary Secret Code Invalid!",
+    message: "Beneficiary Not Registered!",
   },
   INVALID_OTP: {
     httpStatus: 400,

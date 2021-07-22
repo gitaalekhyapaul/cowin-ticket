@@ -155,38 +155,11 @@ export const RegistrationValidationSchema = yup.object({
     .string()
     .trim()
     .matches(/^\d{5}$/, "ID must be 5 Digits."),
-  mobile: yup
+  beneficiaryId: yup
     .string()
     .trim()
-    .required("Mobile number is Required.")
-    .matches(/^[0-9]{10}$/, "Mobile number should be 10 digits."),
-  cowin: yup
-    .object({
-      registration: yup
-        .string()
-        .trim()
-        .oneOf(["Y", "N"], "Registration must be Y or N.")
-        .required("Registration is Required."),
-      code: yup
-        .string()
-        .trim()
-        .matches(/^[0-9]{4}$/, "CoWin Secret Code must be 4 digits."),
-      beneficiaryId: yup.string().trim(),
-      otp: yup
-        .string()
-        .trim()
-        .matches(/^[0-9]{6}$/, "OTP must be 6 digits."),
-      validatedOtp: yup.boolean().isTrue(),
-    })
-    .test("XOR", "Either Non-CoWin or Secret Code is Required.", (values) => {
-      if (values.registration === "Y" && values.code && values.beneficiaryId) {
-        return true;
-      } else if (values.registration === "N") {
-        return true;
-      } else {
-        return false;
-      }
-    }),
+    .length(14, "Beneficiary ID should be 14 Digits.")
+    .required("Beneficiary ID is Required."),
 });
 
 export type RegistrationSchema = yup.InferType<

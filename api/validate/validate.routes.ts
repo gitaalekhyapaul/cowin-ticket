@@ -25,7 +25,7 @@ const handleValidateOtp = async (
 ) => {
   try {
     const { code, otp, txnId } = req.body as validateOTPRequest;
-    const { beneficiaryId } = await validateOtp(otp, txnId);
+    const { beneficiaryId } = await validateOtp(code, otp, txnId);
     const success = await validateBeneficiary(`${beneficiaryId}`, code);
     res.status(200).json({
       success,

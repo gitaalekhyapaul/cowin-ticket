@@ -40,14 +40,11 @@ const Mobile = () => {
   return (
     <>
       <Input
-        label="Mobile Number"
-        name="mobile"
+        label="Beneficiary ID"
+        name="beneficiaryId"
         type="text"
-        placeholder="9876543210"
+        placeholder="XXXXXXXXXXXXXX"
       />
-      <small className="d-block text-center text-danger">
-        Re-enter the last digit if &apos;Get OTP&apos; button disabled.
-      </small>
     </>
   );
 };
@@ -57,14 +54,7 @@ const CompleteReg = ({ resetTab, ...props }: ComponentProps) => {
   const tabContext = useContext(TabContext);
   const initValues = {
     id: (tabContext.ticket as DBSchema).id,
-    mobile: "",
-    cowin: {
-      registration: "Y",
-      code: "",
-      beneficiaryId: "",
-      otp: "",
-      validatedOtp: undefined,
-    },
+    beneficiaryId: "-",
   };
   const submitHandler = async (
     values: RegistrationSchema,
@@ -83,7 +73,7 @@ const CompleteReg = ({ resetTab, ...props }: ComponentProps) => {
       } finally {
         const { data } = await API?.post("/api/v1/update/beneficiary", {
           id: values.id,
-          beneficiaryId: values.cowin.beneficiaryId,
+          beneficiaryId: values.beneficiaryId,
         })!;
         toast.success("Beneficiary Registered!");
         hooks.setSubmitting(false);
@@ -130,18 +120,6 @@ const CompleteReg = ({ resetTab, ...props }: ComponentProps) => {
             <div className="row mx-auto mb-2">
               <div className="col-md-11 col-12">
                 <Mobile />
-              </div>
-            </div>
-            <div className="row mx-auto mb-2">
-              <div className="col-md-11 col-12 d-flex align-center">
-                <div className="row mx-auto text-center ">
-                  <GetOTP />
-                </div>
-              </div>
-            </div>
-            <div className="row mx-auto mb-2">
-              <div className="col-md-11 col-12">
-                <CowinCode overwriteClass="col-md-12 mb-2" />
               </div>
             </div>
             <div className="row mx-auto mb-3 mt-3 d-flex justify-content-center align-center">

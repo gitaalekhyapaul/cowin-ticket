@@ -13,7 +13,12 @@ export const updateBeneficiary = async (
       id: id,
     },
     {
-      $set: { "cowin.registration": "Y", "cowin.beneficiaryId": beneficiaryId },
+      $set: {
+        "cowin.registration": "Y",
+        "cowin.beneficiaryId": `**********${beneficiaryId.slice(
+          beneficiaryId.length - 4
+        )}`,
+      },
     }
   );
   if (modifiedCount === 0) {

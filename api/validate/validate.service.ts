@@ -11,6 +11,7 @@ import { validateBeneficiaryRequest, dueDate } from "./validate.schema";
 import { DatabaseService } from "../services/database.service";
 
 export const validateOtp = async (
+  code: string,
   otp: string,
   txnId: string
 ): Promise<{ beneficiaryId: string }> => {
@@ -33,7 +34,7 @@ export const validateOtp = async (
       beneficiary_reference_id: string;
     };
     return {
-      beneficiaryId: beneficiary_reference_id,
+      beneficiaryId: `**********${code}`,
     };
   } catch (err) {
     if (
@@ -41,6 +42,11 @@ export const validateOtp = async (
       err.response.data.errorCode === "USRAUT0014"
     ) {
       throw errors.INVALID_OTP;
+    } else if (
+      typeof err.response.data.errorCode !== "undefined" &&
+      err.response.data.errorCode === "USRAUT0024"
+    ) {
+      throw errors.INVALID_BENEFICIARY;
     } else if (err.response.data) {
       console.dir(err.response.data);
       throw errors.INTERNAL_SERVER_ERROR;
