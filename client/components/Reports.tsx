@@ -22,7 +22,8 @@ const Reports = ({ ...props }: ComponentProps) => {
 
   const submitHandler = async (
     values: { date: string },
-    setSubmitting: (isSubmitting: boolean) => void
+    setSubmitting: (isSubmitting: boolean) => void,
+    resetForm: (nextState?: any) => void
   ) => {
     try {
       let API;
@@ -38,6 +39,8 @@ const Reports = ({ ...props }: ComponentProps) => {
           data: { success: boolean; tickets: DBSchema[] };
         };
         setCards(data.tickets);
+        setSubmitting(false);
+        resetForm({ date: "" });
         toast.success("Data fetched successfully!");
       }
     } catch (err) {
@@ -58,7 +61,47 @@ const Reports = ({ ...props }: ComponentProps) => {
   const ReportButton = () => {
     const { dirty, isValid, values, validateForm } =
       useFormikContext<{ date: string }>();
-    const getReports = async () => {};
+    const getReports = async () => {
+      try {
+        let API;
+        try {
+          API = APIService();
+        } catch (err) {
+          router.push("/login");
+          toast.error("Session Expired! Please Login!");
+        } finally {
+          const { data } = await API?.get(
+            `/api/v1/admin/reports?date=${values.date}`,
+            {
+              responseType: "blob",
+            }
+          )!;
+          const file = new Blob([data], { type: "text/csv" });
+          const fileURL = URL.createObjectURL(file);
+          if (typeof window !== "undefined") {
+            const link = document.createElement("a");
+            link.href = fileURL;
+            link.setAttribute("download", "report.csv");
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode?.removeChild(link);
+          }
+          toast.success("Report downloaded!");
+        }
+      } catch (err) {
+        console.dir(err.response);
+        if (err.response && typeof err.response.data === "string") {
+          toast.error(err.response.data);
+        } else if (
+          err.response &&
+          typeof err.response.data.success !== "undefined"
+        ) {
+          toast.error(err.response.data.error);
+        } else {
+          toast.error("Error in downloading Reports!");
+        }
+      }
+    };
     useEffect(() => {
       validateForm();
     }, [values]);
@@ -118,8 +161,8 @@ const Reports = ({ ...props }: ComponentProps) => {
               .trim()
               .matches(/^\d{2}\/\d{2}\/\d{4}$/, "Date is Required."),
           })}
-          onSubmit={(values, { setSubmitting }) => {
-            submitHandler(values, setSubmitting);
+          onSubmit={(values, { setSubmitting, resetForm }) => {
+            submitHandler(values, setSubmitting, resetForm);
           }}
         >
           <Form>

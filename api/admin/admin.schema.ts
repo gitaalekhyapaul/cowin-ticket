@@ -22,5 +22,21 @@ export const adminLoginSchema = yup
 export type adminLogin = yup.InferType<typeof adminLoginSchema>;
 
 export interface userInfo {
-  id: string;
+  user: string;
 }
+
+export const getReportsSchema = yup
+  .object({
+    date: yup
+      .string()
+      .trim()
+      .matches(
+        /^\d{2}\/\d{2}\/\d{4}$/,
+        "date: Invalid Date Format. Valid Format: DD/MM/YYYY"
+      )
+      .required("Date is Required"),
+  })
+  .noUnknown(true)
+  .required();
+
+export type getReports = yup.InferType<typeof getReportsSchema>;
