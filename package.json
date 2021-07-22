@@ -1,6 +1,6 @@
 {
   "name": "cowin-ticket",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A Co-WIN vaccination ticketing system, serves as a practice for Next.js",
   "main": "./build/app.js",
   "scripts": {

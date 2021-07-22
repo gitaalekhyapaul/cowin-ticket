@@ -34,7 +34,7 @@ const Reports = ({ ...props }: ComponentProps) => {
         toast.error("Session Expired! Please Login!");
       } finally {
         const { data } = (await API?.get(
-          `/api/v1/tickets/get?vaccinated=true&date=${values.date}`
+          `/api/v1/tickets/get?date=${values.date}`
         )) as {
           data: { success: boolean; tickets: DBSchema[] };
         };
