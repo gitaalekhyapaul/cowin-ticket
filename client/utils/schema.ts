@@ -17,7 +17,7 @@ export const TicketValidationSchema = yup.object({
     .string()
     .trim()
     .length(6, "Pincode must be 6 digits.")
-    .matches(/^7[0-9]{5}$/, "Pincode should start with 7.")
+    .matches(/^[1-9]{1}[0-9]{5}$/, "Pincode should start with 1-9.")
     .required("Pincode is Required."),
   po: yup.string().trim().required("Post Office is Required."),
   ps: yup.string().trim().required("Police Station is Required."),

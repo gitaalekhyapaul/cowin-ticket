@@ -18,7 +18,7 @@ const PincodeSelect = () => {
         const newOptions: Array<{ name: string; value: string }> = [
           { name: "Select Option", value: "" },
         ];
-        if (/^7[0-9]{5}$/.test(pincode)) {
+        if (/^[1-9]{1}[0-9]{5}$/.test(pincode)) {
           const { data } = await axios.get(
             `https://api.data.gov.in/resource/6176ee09-3d56-4a3b-8115-21841576b2f6?api-key=${process.env.NEXT_PUBLIC_API_KEY}&format=json&skip=0&limit=100&filters[pincode]=${pincode}`
           );
