@@ -6,6 +6,7 @@ import { AuthContext } from "./Stores/AuthContext";
 
 import Logo from "./Logo";
 import Clock from "./Clock";
+import RegCount from "./RegCount";
 
 const Role = () => {
   const authContext = useContext(AuthContext);
@@ -104,6 +105,7 @@ const TopBar = () => {
           )}
         </Navbar.Collapse>
         <Nav.Link className="ml-auto m-0 p-0 d-none d-md-block">
+          {authContext.auth ? <RegCount /> : <></>}
           <Clock />
         </Nav.Link>
       </Container>
