@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+
 import APIService from "../utils/api";
 
 const RegCount = () => {
-  const countTickets = async () => {
+  const countTickets = async (currentCount: number) => {
     if (typeof window !== "undefined") {
       const API = APIService();
       const day = new window.Date();
@@ -15,8 +17,22 @@ const RegCount = () => {
       }/${
         day.getFullYear() < 10 ? "0" + day.getFullYear() : day.getFullYear()
       }`;
-      const { data } = await API.get(`/api/v1/tickets/get?date=${date}`);
-      return (data.tickets as Array<any>).length;
+      try {
+        const { data } = await API.get(`/api/v1/tickets/get?date=${date}`);
+        return (data.tickets as Array<any>).length;
+      } catch (err) {
+        if (err.response && typeof err.response.data === "string") {
+          toast.error(err.response.data);
+        } else if (
+          err.response &&
+          typeof err.response.data.success !== "undefined"
+        ) {
+          toast.error(err.response.data.error);
+        } else {
+          toast.error("Cannot Connect to Backend API!");
+        }
+        return currentCount;
+      }
     } else {
       return 0;
     }
@@ -27,8 +43,8 @@ const RegCount = () => {
     if (!inter) {
       setInter(
         setInterval(async () => {
-          const count = await countTickets();
-          setCount(count);
+          const newCount = await countTickets(count);
+          setCount(newCount);
         }, 1000)
       );
     }
