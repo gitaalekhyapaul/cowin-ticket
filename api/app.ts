@@ -30,6 +30,10 @@ if (process.env.NODE_ENV === "production") {
       next(err);
     }
   });
+} else if (process.env.NODE_ENV === "maintenance") {
+  app.use("*", (req: Request, res: Response) => {
+    res.status(503).sendFile(join(__dirname, "..", "templates", "503.html"));
+  });
 } else {
   app.use("*", (req: Request, res: Response) => {
     res.status(404).json({
